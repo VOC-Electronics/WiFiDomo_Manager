@@ -1,6 +1,6 @@
 # WiFiDomo_Manager
 ======================
-- Authors: Martijn van Leeuwen, Mano Biletski
+- Authors: Martijn van Leeuwen, Mano Biletsky
 - Twitter: [@RaspberryPiNL]
 - URL: [Website](http://www.voc-electronics.com)
 - Email: [Martijn van Leeuwen](mailto:info@voc-electronics.com)
@@ -8,7 +8,7 @@
 - Version: 0.1
 
 ## Description
-Een flask based website for WiFiDomo.
+Een flask based interface for the WiFiDomo product line.
 
 
 ### Database:
