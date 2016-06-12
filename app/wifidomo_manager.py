@@ -1,9 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# Copyright (C) 2016, V.O.C. van Leeuwen
 
 __author__ = 'Martijn van Leeuwen'
 __email__ = 'info@voc-electronics.com'
 
+'''
+# =[ DISCLAIMER ]===============================================================
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
 # ==============================================================================
 #
 #  App name: wifidomo_manager.py
@@ -15,23 +27,26 @@ __email__ = 'info@voc-electronics.com'
 # ==============================================================================
 # Imports
 # ==============================================================================
+'''
 import os
 from datetime import datetime
 from flask import Flask, render_template, url_for, request, g, flash, redirect, jsonify, session
 from flask_navigation import Navigation
-#from flask.ext.navigation import Navigation
-from flask_sqlalchemy import SQLAlchemy
-#from flask.ext.sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
-#from flask.ext.httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.contrib.fixers import ProxyFix
+from flask_sqlalchemy import SQLAlchemy
+#from flask.ext.navigation import Navigation
+#from flask.ext.sqlalchemy import SQLAlchemy
+#from flask.ext.httpauth import HTTPBasicAuth
+
 '''
 # ==============================================================================
 # Global settings
 # ==============================================================================
 # Setup Flask
 '''
+
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 app.secret_key = os.urandom(24)
