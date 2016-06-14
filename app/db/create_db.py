@@ -35,7 +35,8 @@ __email__ = 'info@voc-electronics.com'
 import os
 import sys
 import time
-from sqlalchemy import Column, ForeignKey, Integer, String
+from datetime import datetime
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -64,6 +65,7 @@ class WiFiDomo(Base):
   ip4 = Column(String(16), nullable=True)
   ip6 = Column(String(128), nullable=True)
   fqdn = Column(String(256), nullable=True)
+  reg_date = Column(DateTime)
 
 class WiFiNetworks(Base):
   __tablename__ = 'wifinetworks'
@@ -84,7 +86,22 @@ class Loginlog(Base):
   __tablename__ = 'loginlog'
   id = Column(Integer, primary_key=True)
   loginby = Column(String(250), nullable=True)
-  logindate = Column(String(250), nullable=False)
+  logindate = Column(DateTime)
+
+
+class Preset(Base):
+  __tablename__ = 'preset'
+  id = Column(Integer, primary_key=True)
+  name = Column(String(200), nullable=False)
+  r_code = Column(Integer, nullable=False)
+  g_code = Column(Integer, nullable=False)
+  b_code = Column(Integer, nullable=False)
+
+
+class Pattern(Base):
+  __tablename__ = 'pattern'
+  id = Column(Integer, primary_key=True)
+  name = Column(String(200), nullable=False)
 
 
 # Create an engine that stores data in the local directory's
