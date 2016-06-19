@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block body %}
+  <p>
+    Here we store the WiFiDomos.
+  {% if g.user %}
+  <p>
+    You're signed in as “<span title="{{ g.user.openid }}">{{ g.user.name }}</span>”.
+  {% else %}
+  <p>
+    In order to add new or modify WiFiDomos you need to be loged in.<br>
+  {% endif %}
+  <h2>WiFiDomos by Location</h2>
+  <ul>
+  {% for location in locations %}
+    <li><a href="{{ location.url }}">{{ location.name }}</a> ({{ location.count }})
+  {% endfor %}
+  </ul>
+
+  {% if g.user.is_admin %}
+  <h2>Admin Tools</h2>
+  <ul>
+    <li><a href="{{ url_for('.manage_locations') }}">Manage locations</a>
+  </ul>
+  {% endif %}
+{% endblock %}
