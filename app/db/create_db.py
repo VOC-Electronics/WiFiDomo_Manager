@@ -59,13 +59,14 @@ class Person(Base):
 class WiFiDomo(Base):
   __tablename__ = 'wifidomo'
   id = Column(Integer, primary_key=True)
-  name = Column(String(256), nullable=True)
-  MAC = Column(String(256), nullable=True)
+  name = Column(String(256), index=True, unique=True, nullable=True)
+  MAC = Column(String(256), unique=True, nullable=True)
   locationid = Column(Integer, nullable=True)
   ip4 = Column(String(16), nullable=True)
   ip6 = Column(String(128), nullable=True)
   fqdn = Column(String(256), nullable=True)
-  reg_date = Column(DateTime)
+  status = Column(Integer, nullable=True)
+  last_used_rgb = Column(Integer, nullable=True)
 
 class WiFiNetworks(Base):
   __tablename__ = 'wifinetworks'
@@ -77,9 +78,9 @@ class WiFiNetworks(Base):
 class Locations(Base):
   __tablename__ = 'locations'
   id = Column(Integer, primary_key=True)
-  location_name = Column(String(250), nullable=False)
-  location_code = Column(Integer, nullable=True)
-  location_description = Column(String(512), nullable=True)
+  location_name = Column(String(250), unique=True, nullable=False)
+  location_code = Column(String, nullable=True)
+  location_description = Column(String, nullable=True)
 
 
 class Loginlog(Base):
@@ -92,7 +93,7 @@ class Loginlog(Base):
 class Preset(Base):
   __tablename__ = 'preset'
   id = Column(Integer, primary_key=True)
-  name = Column(String(200), nullable=False)
+  name = Column(String(200), unique=True, nullable=False)
   r_code = Column(Integer, nullable=False)
   g_code = Column(Integer, nullable=False)
   b_code = Column(Integer, nullable=False)
