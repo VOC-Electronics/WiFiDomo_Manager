@@ -1,7 +1,12 @@
 {% extends "layout.html" %}
 {% block head %}
   {{ super() }}
-  <style type=text/css>
+   <script type="text/javascript">
+        function zoom() {
+            document.body.style.zoom = "50%"
+        }
+  </script>
+  <style type="text/css">
     h1 { margin: 0 0 10px 0; background: url({{ url_for('static', filename='voc/logo_wifidomo.png') }}) no-repeat center; width 880px;height: 200px; }
     h1 span, p.tagline { display: none;
   </style>
@@ -21,6 +26,7 @@
   </script>
 {% endblock %}
 {% block body %}
+<body onload="zoom()">
   <h2>Login</h2>
   {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
   <form action="{{ url_for('general.login') }}" method=post>
