@@ -2,11 +2,14 @@
 {% block head %}
 <title>{% block title %}Welcome{% endblock %} | WiFiDomo Manager</title>
 <meta charset=utf-8>
-<!--<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style-voc.css') }}">-->
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-<script type=text/javascript
-  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type=text/javascript src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript">
+  function zoom() {
+    document.body.style.zoom = "100%"
+  }
+  </script>
 {% endblock %}
 
 <div class=box>
@@ -43,9 +46,3 @@
     Source based on code from the <a href=http://lucumr.pocoo.org/>Flask site</a>
   </p>
 </div>
-
-
-  <div class="menu">
-
-  </div>
-
