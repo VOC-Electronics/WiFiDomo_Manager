@@ -99,7 +99,7 @@ def request_wants_json():
     return best == 'application/json' and \
        request.accept_mimetypes[best] > request.accept_mimetypes['text/html']
 
-
+#ToDo: Fix the routine, it keeps crashing the app.
 def requires_login(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -109,7 +109,7 @@ def requires_login(f):
         return f(*args, **kwargs)
     return decorated_function
 
-
+#ToDo: Fix the routine, it keeps crashing the app.
 def requires_admin(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -147,11 +147,3 @@ def format_timedelta(delta, granularity='second', threshold=.85):
             return rv
     return u''
 
-
-def display_openid(openid):
-    if not openid:
-        return ''
-    rv = openid
-    if rv.startswith(('http://', 'https://')):
-        rv = rv.split('/', 2)[-1]
-    return rv.rstrip('/')
