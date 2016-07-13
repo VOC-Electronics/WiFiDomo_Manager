@@ -54,12 +54,12 @@ class Person(Base):
   loginid = Column(String(128), nullable=False)
   password = Column(String(512), nullable=False)
   email = Column(String(250), nullable=True)
-
+  created = Column(DateTime, nullable=False)
 
 class WiFiDomo(Base):
   __tablename__ = 'wifidomo'
   id = Column(Integer, primary_key=True)
-  name = Column(String(256), index=True, unique=True, nullable=True)
+  name = Column(String(256), index=True, nullable=True)
   MAC = Column(String(256), unique=True, nullable=True)
   locationid = Column(Integer, nullable=True)
   ip4 = Column(String(16), nullable=True)
@@ -67,21 +67,22 @@ class WiFiDomo(Base):
   fqdn = Column(String(256), nullable=True)
   status = Column(Integer, nullable=True)
   last_used_rgb = Column(Integer, nullable=True)
+  created = Column(DateTime, nullable=False)
 
 class WiFiNetworks(Base):
   __tablename__ = 'wifinetworks'
   id = Column(Integer, primary_key=True)
   wifi_sid = Column(String(128), nullable=True)
   wifi_loc = Column(String(128), nullable=True)
-
+  created = Column(DateTime, nullable=False)
 
 class Locations(Base):
   __tablename__ = 'locations'
   id = Column(Integer, primary_key=True)
-  location_name = Column(String(250), unique=True, nullable=False)
+  location_name = Column(String(250), nullable=False)
   location_code = Column(String, nullable=True)
   location_description = Column(String, nullable=True)
-
+  created = Column(DateTime, nullable=False)
 
 class Loginlog(Base):
   __tablename__ = 'loginlog'
@@ -93,11 +94,11 @@ class Loginlog(Base):
 class Preset(Base):
   __tablename__ = 'preset'
   id = Column(Integer, primary_key=True)
-  name = Column(String(200), unique=True, nullable=False)
+  name = Column(String(200), nullable=False)
   r_code = Column(Integer, nullable=False)
   g_code = Column(Integer, nullable=False)
   b_code = Column(Integer, nullable=False)
-
+  created = Column(DateTime, nullable=False)
 
 class Pattern(Base):
   __tablename__ = 'pattern'
@@ -107,7 +108,8 @@ class Pattern(Base):
 
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.
-engine = create_engine('sqlite:///wifidomo.db')
+engine = create_engine('sqlite:///wifidomo.db',
+                       convert_unicode = True)
 
 # Create all tables in the engine. This is equivalent to "Create Table"
 # statements in raw SQL.
