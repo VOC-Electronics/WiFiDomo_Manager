@@ -36,6 +36,9 @@ from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.contrib.fixers import ProxyFix
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+
+#from app.database import db_session
 #from flask.ext.navigation import Navigation
 #from flask.ext.sqlalchemy import SQLAlchemy
 #from flask.ext.httpauth import HTTPBasicAuth
@@ -50,7 +53,13 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 app.secret_key = os.urandom(24)
-# db = SQLAlchemy(app)
+app.config.from_object('wifidomoconfig')
+
+#ToDo: Implement Login manager.
+#login_manager = LoginManager()
+#login_manager.init_app(app)
+
+db = SQLAlchemy(app)
 auth = HTTPBasicAuth()
 nav = Navigation(app)
 
@@ -67,7 +76,10 @@ users = {
 # Website navigation:
 nav.Bar('top', [
   nav.Item('Home', 'general.index'),
-  nav.Item('Add', 'general.index'),
+  nav.Item('WiFiDomo', 'wifidomos.index'),
+  nav.Item('Locations', 'locations.index'),
+  nav.Item('Presets', 'general.index'),
+  nav.Item('Patterns', 'general.index'),
   nav.Item('Overview', 'general.index'),
   nav.Item('About', 'general.index')
 ])
@@ -78,6 +90,12 @@ nav.Bar('top', [
 # ==============================================================================
 '''
 
+#@app.before_request
+#def load_current_user():
+#    g.user = None
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 @app.errorhandler(404)
 def not_found(error):
@@ -95,6 +113,16 @@ def verify_password(username, password):
 def current_year():
     return {'current_year': datetime.utcnow().year}
 
+@app.teardown_request
+def remove_db_session(exception):
+    db_session.remove()
+
+@app.route("/logout")
+#@login_required
+def logout():
+    logout_user()
+    return redirect(somewhere)
+
 '''
 # ==============================================================================
 # Load and register module
@@ -102,11 +130,29 @@ def current_year():
 '''
 
 from app.views import general
+from app.views import wifidomos
+from app.views import locations
 
+if app.debug:
+  print('Regisering blueprint: General')
 app.register_blueprint(general.mod)
 
+if app.debug:
+  print('Regisering blueprint: WiFiDomo')
+app.register_blueprint(wifidomos.mod,
+                       url_prefix='/wifidomo',
+                       template_folder='templates/wifidomos')
+
+if app.debug:
+  print('Registering blueprint: Locations')
+app.register_blueprint(locations.mod,
+                       url_prefix='/locations',
+                       template_folder='templates/locations')
+
+print('Using database: %s' % str(app.config['DB_FILE']))
+
 # ToDo Enable the use of a local or remote database
-#from app.database import User, db_session # When they are in use.
+from app.database import Person, WiFiDomo, WiFiNetworks, Locations, Loginlog, Preset, Pattern, Person, db_session # When they are in use.
 from app import utils
 
 app.jinja_env.filters['datetimeformat'] = utils.format_datetime
