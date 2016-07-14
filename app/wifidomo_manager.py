@@ -56,8 +56,8 @@ app.secret_key = os.urandom(24)
 app.config.from_object('wifidomoconfig')
 
 #ToDo: Implement Login manager.
-#login_manager = LoginManager()
-#login_manager.init_app(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 db = SQLAlchemy(app)
 auth = HTTPBasicAuth()
@@ -93,9 +93,9 @@ nav.Bar('top', [
 #@app.before_request
 #def load_current_user():
 #    g.user = None
-#@login_manager.user_loader
-#def load_user(user_id):
-#    return User.get(user_id)
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 @app.errorhandler(404)
 def not_found(error):
