@@ -35,7 +35,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker, backref, relation
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug import cached_property, http_date
 from flask import url_for, Markup
-from app.wifidomo_manager import app
+from app.wifidomo_manager import app, db
 from modules.config import config
 
 # ===========================================================================
@@ -61,24 +61,63 @@ class Person(Base):
   # Here we define columns for the table person
   # Notice that each column is also a normal Python instance attribute.
   id = Column(Integer, primary_key=True)
-  surname = Column(String(100), nullable=False)
-  lastname = Column(String(150), nullable=False)
-  fullname = Column(String(250), nullable=False)
-  loginid = Column(String(128), nullable=False)
-  password = Column(String(512), nullable=False)
-  email = Column(String(250), nullable=True)
-  created = Column(DateTime)
+  surname = Column(String, nullable=False)
+  lastname = Column(String, nullable=False)
+  fullname = Column(String, nullable=False)
+  loginid = Column(String, nullable=True)
+  password = Column(String, nullable=False)
+  email = Column(String, nullable=True)
+  created = Column(DateTime,
+                   default=datetime.utcnow,
+                   onupdate=datetime.utcnow)
+  updated_on = Column(DateTime,
+                      default=datetime.utcnow,
+                      onupdate=datetime.utcnow)
+  password = Column(String, nullable=False)
+#  authenticated = Column(db.Boolean, default=False)
 
-  def __init__(self, surname, lastname, fullname):
+  def __init__(self, surname, lastname, fullname, password):
     self.fullname = fullname
     self.surname = surname
     self.lastname = lastname
     self.created = datetime.utcnow()
+    self.password = password
 
+  def __repr__(self):
+    return '<User %r>' % (self.name)
+
+  def is_active(self):
+    """True, as all users are active."""
+    return True
+
+
+  def get_id(self):
+    """Return the email address to satisfy Flask-Login's requirements."""
+    return self.email
+
+
+  def get_email(self):
+    return self.email
+
+
+  def get_lastname(self):
+    return self.lastname
+
+  def get_surname(self):
+    return self.surname
+
+  def is_authenticated(self):
+    """Return True if the user is authenticated."""
+    return self.authenticated
+
+
+  def is_anonymous(self):
+    """False, as anonymous users aren't supported."""
+    return False
 
 class WiFiDomo(Base):
   __tablename__ = 'wifidomo'
-  id = Column(Integer, primary_key=True)
+  id = Column(Integer, primary_key=True, autoincrement=True)
   name = Column(String(256), index=True, unique=True, nullable=True)
   MAC = Column(String(256), unique=True, nullable=True)
   locationid = Column(Integer, nullable=True)
@@ -143,14 +182,14 @@ class Locations(Base):
 class Loginlog(Base):
   __tablename__ = 'loginlog'
   id = Column(Integer, primary_key=True)
-  loginby = Column(String(250), nullable=True)
+  loginby = Column(String, nullable=True)
   logindate = Column(DateTime)
 
 
 class Preset(Base):
   __tablename__ = 'preset'
   id = Column(Integer, primary_key=True)
-  name = Column(String(200), nullable=False)
+  name = Column(String, nullable=False)
   r_code = Column(Integer, nullable=False)
   g_code = Column(Integer, nullable=False)
   b_code = Column(Integer, nullable=False)
