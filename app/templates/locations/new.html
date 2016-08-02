@@ -26,20 +26,21 @@
 
 {% block body %}
   <p>
-    <small>Please fill in all details.</small>
   <form action="" method=post>
     <dl class=formlist>
       <dt>Name:</dt>
       <dd><input type=text name=name value="{{ request.form.name }}" size=40>
       <dt>code:</dt>
-      <dd><input type=text name=fqdn value="{{ request.form.code }}" size=20>
+      <dd><input type=text name=code value="{{ request.form.code }}" size=20>
       <dt>Description:</dt>
       <dd><textarea name=body cols=40 rows=20>{{ request.form.body }}</textarea>
     </dl>
     <p>
       <input type=submit value="Add location">
       <input type="reset" value="Reset">
+    </p>
   </form>
+  </p>
   {% if preview %}
   <div id=preview>
     <h2>Preview</h2>

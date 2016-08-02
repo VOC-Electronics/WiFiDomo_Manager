@@ -38,11 +38,6 @@ from werkzeug.contrib.fixers import ProxyFix
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
-#from app.database import db_session
-#from flask.ext.navigation import Navigation
-#from flask.ext.sqlalchemy import SQLAlchemy
-#from flask.ext.httpauth import HTTPBasicAuth
-
 '''
 # ==============================================================================
 # Global settings

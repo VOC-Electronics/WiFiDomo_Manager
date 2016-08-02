@@ -32,8 +32,7 @@
   <pre>
     <span class="ig2">
       <ul class="overzicht">
-        {% if nr_wifidomo > 0 %}
-        <li>Number of WiFiDomos: {{ nr_wifidomo }}</li>{% else %}<li>Number of WiFiDomos: None!</li>{% endif %}
+        <li>{% if nr_wifidomo > 0 %}Number of WiFiDomos: {{ nr_wifidomo }} {% else %}Number of WiFiDomos: None!{% endif %}</li>
         <li>Number of Locations: {{ nr_locations }}</li>
         <li>Number of Users: {{ nr_users }}</li>
       </ul>

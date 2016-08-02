@@ -21,14 +21,8 @@
     });
   </script>
 {% endblock %}
-
 {% block title %}WiFiDomo Locations{% endblock %}
-
 {% block body %}
-  <p>
-    Edit the location information.
-  </p>
-
   <p class=nav>
   <div class=metanav>
     <li>
@@ -45,14 +39,15 @@
   <form action="" method=post>
     <dl class=formlist>
       <dt>Name:</dt>
-      <dd><input type=text name=name value="{{ request.form.name }}" size=40>
+      <dd><input type=text name=name value="{{ form.name }}" size=40>
       <dt>code:</dt>
-      <dd><input type=text name=fqdn value="{{ request.form.code }}" size=20>
+      <dd><input type=text name=location_code value="{{ form.location_code }}" size=20>
       <dt>Description:</dt>
-      <dd><textarea name=body cols=40 rows=20>{{ request.form.body }}</textarea>
+      <dd><textarea name=body cols=40 rows=20>{{ form.body }}</textarea>
     </dl>
     <p>
-      <input type=submit value=Delete>
+      <input type=submit name=submit value=Submit>
+      <input type=submit name=delete value=Delete>
       <input type=submit name=cancel value=Cancel>
   </form>
 {% endblock %}

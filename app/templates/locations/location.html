@@ -39,17 +39,14 @@
     {% endfor %}
     </li>
   </div>
-  {% for message in get_flashed_messages() %}
-  <div class=flash>{{ message }}</div>
-  {% endfor %}
-  </p>
 
+  </p>
   <p>
     <h3>Current locations : {% if location_count %} ( {{ location_count }} ) {% endif %}</h3><br>
   </p>
-    <ul>
+<ul>
   {% for location in location_list %}
-    <li><a href="{{ location.url }}">{{ location.location_name }}</a> ({{ location.locationd_code }})
+    <li><a href="{{ url_for('.edit_location',id=location.id) }}">{{ location.location_name }}</a> ({{ location.location_code }})</li>
   {% endfor %}
   </ul>
 
