@@ -74,7 +74,7 @@ class WiFiDomo(Base):
   __tablename__ = 'wifidomo'
   id = Column(Integer, primary_key=True)
   name = Column(String, index=True, nullable=True)
-  MAC = Column(String, unique=True, nullable=True)
+  MAC = Column(String, nullable=True)
   locationid = Column(Integer, nullable=True)
   ip4 = Column(String(16), nullable=True)
   ip6 = Column(String, nullable=True)
