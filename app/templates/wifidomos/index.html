@@ -27,25 +27,18 @@
   <p class=nav>
   <div class=metanav>
     <li>
-    {% for item in nav.subtop %}
+    {% for item in nav.subtopWD %}
     <lu class="{{ 'active' if item.is_active else '' }}">
         <a href="{{ item.url }}">{{ item.label }}</a>
     </lu>
     {% endfor %}
     </li>
   </div>
-  {% for message in get_flashed_messages() %}
-  <div class=flash>{{ message }}</div>
-  {% endfor %}
   </p>
-
   <p>
-    <h2>WiFiDomos</h2>
+    <h3>Current WiFiDomos : {% if nr_wifidomo %} ( {{ nr_wifidomo }} ) {% endif %}</h3><br>
   </p>
-
   <ul>
-  {% for location in wifidomo_locations %}
-    <li><a href="{{ location.url }}">{{ location.name }}</a> ({{ location.count }})
-  {% endfor %}
+    <li>Bla bla</li>
   </ul>
 {% endblock %}

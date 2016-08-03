@@ -40,18 +40,18 @@
   </div>
   </p>
   <p>
-    <small>Please fill in all details.</small>
+    <small>Please fill in the details.</small>
   <form action="" method=post>
     <dl class=formlist>
       <dt>Name:</dt>
       <dd><input type=text name=name value="{{ request.form.name }}" size=40>
       <dt>FQDN:</dt>
       <dd><input type=text name=fqdn value="{{ request.form.fqdn }}" size=40>
-      <dt>MAC address:</dt>
+      <dt>MAC address: - (Leave blank if unknown)</dt>
       <dd><input type=text name=mac value="{{ request.form.mac }}" size=40>
-      <dt>IP (v4):</dt>
+      <dt>IP (v4): - (Leave blank if unknown)</dt>
       <dd><input type=text name=ip4 value="{{ request.form.ip4 }}" size=40>
-      <dt>IP (v6):</dt>
+      <dt>IP (v6): - (Leave blank if unknown)</dt>
       <dd><input type=text name=ip6 value="{{ request.form.ip6 }}" size=40>
       <dt>Status:</dt>
       <dd><input type=checkbox name=status value="Active" >Active<br>
@@ -65,7 +65,7 @@
         </select>
     </dl>
     <p>
-    <input type=submit value="Add WiFiDomo">
+    <input type=submit name=new value="Add WiFiDomo">
     <input type=submit name=cancel value="Cancel">
   </form>
 {% endblock %}
