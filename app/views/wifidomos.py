@@ -165,23 +165,58 @@ def add_wifidomo():
 @mod.route('/edit_wifidomo/<int:id>,', methods=['GET', 'POST'])
 def edit_wifidomo(id):
   error = None
-  location_id = None
-  tempList = []
   data = WiFiDomo.query.get(id)
   if data is None:
     abort(404)
 
-  form = dict(name=data.location_name,
-              body=data.location_description,
-              location_id=data.location_code)
+  form = dict(name=data.name,
+              ip4 = data.ip4,
+              ip6 = data.ip6,
+              mac = data.MAC,
+              fqdn = data.fqdn,
+              location = data.locationid,
+              status = data.status)
+
+  if app.debug:
+    print(data.name)
+    print(data.ip4)
+    print(data.ip6)
+    print(data.fqdn)
+    print(data.locationid)
+
+  tempList = get_location_list()
+
   if request.method == 'POST':
-    return redirect(url_for('wifidomos.index'))
+    if 'delete' in request.form:
+      db_session.delete(data)
+      db_session.commit()
+      flash(u'Deleting wifidomo: %s' % data.name)
+      return redirect(url_for('wifidomos.index'))
+    elif 'submit' in request.form:
+      data.name = form['name']
+      data.fqdn = form['fqdn']
+      data.status = form['status']
+      data.MAC = form['mac']
+      data.ip4 = form['ip4']
+      data.ip6 = form['ip6']
+      data.locationid = form['location']
+
+      if app.debug:
+        print(data.name)
+        print(data.ip4)
+        print(data.ip6)
+        print(data.fqdn)
+        print(data.locationid)
+
+      db_session.commit()
+      flash(u'Saving modifications for %s' % data.name)
+      return redirect(url_for('wifidomos.index'))
+    else:
+      flash(u'Nothing changed')
+      return redirect(url_for('wifidomos.index'))
 
   if request.method == 'GET':
-    print(id)
-    flash(u'Editing location: %s' % data.location_name)
-    form = dict(name=data.location_name,
-                body=data.location_description,
-                location_code=data.location_code)
+    flash(u'Editing wifidomo: %s' % data.name)
     return render_template('wifidomos/edit.html',
-                           form=form)
+                           form=form,
+                           wifidomo_locations=tempList)

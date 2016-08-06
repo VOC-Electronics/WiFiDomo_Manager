@@ -92,6 +92,7 @@ def edit_location(id):
   form = dict(name=data.location_name,
               body=data.location_description,
               location_id=data.location_code)
+
   if request.method == 'POST':
     form['name'] = request.form['name']
     form['location_code'] = request.form['location_code']

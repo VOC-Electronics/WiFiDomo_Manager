@@ -43,22 +43,22 @@
   <form action="" method=post>
     <dl class=formlist>
       <dt>Name:</dt>
-      <dd><input type=text name=name value="{{ request.form.name }}" size=40>
+      <dd><input type=text name=name value="{{ form.name }}" size=40>
       <dt>FQDN:</dt>
-      <dd><input type=text name=fqdn value="{{ request.form.fqdn }}" size=40>
+      <dd><input type=text name=fqdn value="{{ form.fqdn }}" size=40>
       <dt>MAC address: - (Leave blank if unknown)</dt>
-      <dd><input type=text name=mac value="{{ request.form.mac }}" size=40>
+      <dd><input type=text name=mac value="{{ form.mac }}" size=40>
       <dt>IP (v4): - (Leave blank if unknown)</dt>
-      <dd><input type=text name=ip4 value="{{ request.form.ip4 }}" size=40>
+      <dd><input type=text name=ip4 value="{{ form.ip4 }}" size=40>
       <dt>IP (v6): - (Leave blank if unknown)</dt>
-      <dd><input type=text name=ip6 value="{{ request.form.ip6 }}" size=40>
+      <dd><input type=text name=ip6 value="{{ form.ip6 }}" size=40>
       <dt>Status:</dt>
       <dd><input type=checkbox name=status value="Active" >Active<br>
       <dt>Location:
       <dd>
         <select name=location>
         {% for entry in wifidomo_locations %}
-          <option {% if entry['location_id'] == wifidomo_locations.location_id %} selected {% endif %}
+          <option {% if entry['location_id'] == form.location %} selected {% endif %}
                   value={{ entry['location_id'] }}>{{ entry['location_name'] }}</option>
         {% endfor %}
         </select>
