@@ -21,12 +21,12 @@
   </script>
 {% endblock %}
 
-{% block title %}New WiFiDomo{% endblock %}
+{% block title %}Edit WiFiDomo{% endblock %}
 
 {% block body %}
   <body onload="zoom()">
   <p>
-  <h2>Add a new WiFiDomo</h2>
+  <h2>Modify the WiFiDomo</h2>
   </p>
   <p class=nav>
   <div class=metanav>
@@ -40,7 +40,6 @@
   </div>
   </p>
   <p>
-    <small>Please fill in the details.</small>
   <form action="" method=post>
     <dl class=formlist>
       <dt>Name:</dt>
@@ -65,7 +64,8 @@
         </select>
     </dl>
     <p>
-    <input type=submit name=new value="Add WiFiDomo">
-    <input type=submit name=cancel value="Cancel">
+      <input type=submit name=submit value=Submit>
+      <input type=submit name=delete value=Delete>
+      <input type=submit name=cancel value=Cancel>
   </form>
 {% endblock %}
