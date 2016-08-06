@@ -186,6 +186,7 @@ def edit_wifidomo(id):
 
   tempList = get_location_list()
 
+  #ToDo: Need to figure out why the template does not select the correct location.
   if request.method == 'POST':
     if 'delete' in request.form:
       db_session.delete(data)
@@ -193,13 +194,13 @@ def edit_wifidomo(id):
       flash(u'Deleting wifidomo: %s' % data.name)
       return redirect(url_for('wifidomos.index'))
     elif 'submit' in request.form:
-      data.name = form['name']
-      data.fqdn = form['fqdn']
-      data.status = form['status']
-      data.MAC = form['mac']
-      data.ip4 = form['ip4']
-      data.ip6 = form['ip6']
-      data.locationid = form['location']
+      data.name = request.form.get('name')
+      data.fqdn = request.form.get('fqdn')
+      data.status = request.form.get('status')
+      data.MAC = request.form.get('mac')
+      data.ip4 = request.form.get('ip4')
+      data.ip6 = request.form.get('ip6')
+      data.locationid = request.form.get('location')
 
       if app.debug:
         print(data.name)
