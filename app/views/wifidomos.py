@@ -43,10 +43,12 @@ def get_location_list():
   locations = Locations.query.all()
   temp = {}
   for location in locations:
-    temp = { str(location.id), str(location.location_name) }
+    temp = { str(location.location_name), str(location.location_code)}
+    print(temp)
     tempList.append(dict(zip(default_location_keys, temp)))
-    print(location.location_name)
-  print(tempList.sort())
+    print(tempList)
+    print('%s - %s' % (location.location_name,location.location_code))
+  print(tempList)
   return tempList
 
 def get_location_list_old():
@@ -66,8 +68,10 @@ def get_location_list_old():
 @mod.route('/')
 def index():
   nr_wifidomo = WiFiDomo.query.count()
+  wifidomos = WiFiDomo.query.all()
   return render_template('wifidomos/index.html',
-                         nr_wifidomo=nr_wifidomo)
+                         nr_wifidomo=nr_wifidomo,
+                         wifidomo_list=wifidomos)
 
 
 @mod.route('/overview', methods=['GET'])
@@ -132,7 +136,8 @@ def add_wifidomo():
       print ('ip4: %s' % ip4)
       print('Status: %s' % status)
       print('ip6: %s' % str(ip6))
-      print('Location: %s' % str(location.location_name))
+      if location:
+        print('Location: %s' % str(location.location_name))
       print('Check Location')
 
 
@@ -153,7 +158,30 @@ def add_wifidomo():
     # Query the database to get all locations
     # Now use only ony.
     tempList = get_location_list()
+    print(tempList)
     return render_template('wifidomos/new.html',
                            wifidomo_locations=tempList)
 
+@mod.route('/edit_wifidomo/<int:id>,', methods=['GET', 'POST'])
+def edit_wifidomo(id):
+  error = None
+  location_id = None
+  tempList = []
+  data = WiFiDomo.query.get(id)
+  if data is None:
+    abort(404)
 
+  form = dict(name=data.location_name,
+              body=data.location_description,
+              location_id=data.location_code)
+  if request.method == 'POST':
+    return redirect(url_for('wifidomos.index'))
+
+  if request.method == 'GET':
+    print(id)
+    flash(u'Editing location: %s' % data.location_name)
+    form = dict(name=data.location_name,
+                body=data.location_description,
+                location_code=data.location_code)
+    return render_template('wifidomos/edit.html',
+                           form=form)
