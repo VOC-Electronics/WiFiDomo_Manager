@@ -42,26 +42,46 @@
   <p>
   <form action="" method=post>
     <dl class=formlist>
-      <dt>Name:</dt>
-      <dd><input type=text name=name value="{{ form.name }}" size=40>
-      <dt>FQDN:</dt>
-      <dd><input type=text name=fqdn value="{{ form.fqdn }}" size=40>
-      <dt>MAC address: - (Leave blank if unknown)</dt>
-      <dd><input type=text name=mac value="{{ form.mac }}" size=40>
-      <dt>IP (v4): - (Leave blank if unknown)</dt>
-      <dd><input type=text name=ip4 value="{{ form.ip4 }}" size=40>
-      <dt>IP (v6): - (Leave blank if unknown)</dt>
-      <dd><input type=text name=ip6 value="{{ form.ip6 }}" size=40>
-      <dt>Status:</dt>
-      <dd><input type=checkbox name=status value="Active" >Active<br>
-      <dt>Location:
-      <dd>
-        <select name=location>
-        {% for entry in wifidomo_locations %}
-          <option {% if entry['location_id'] == form.location %} selected {% endif %}
+      <table>
+        <tr>
+          <td>Name:</td>
+          <td><input type=text name=name value="{{ form.name }}" size=40></td>
+        </tr>
+        <tr>
+          <td>FQDN:</td>
+          <td><input type=text name=fqdn value="{{ form.fqdn }}" size=40></td>
+        </tr>
+        <tr>
+          <td>MAC address:</td>
+          <td><input type=text name=mac value="{{ form.mac }}" size=40></td>
+          <td>(Leave blank if unknown)</td>
+        </tr>
+        <tr>
+          <td>IP (v4):</td>
+          <td><input type=text name=ip4 value="{{ form.ip4 }}" size=40></td>
+          <td>(Leave blank if unknown)</td>
+        </tr>
+        <tr>
+          <td>IP (v6):</td>
+          <td><input type=text name=ip6 value="{{ form.ip6 }}" size=40></td>
+          <td>(Leave blank if unknown)</td>
+        </tr>
+        <tr>
+          <td>Status:</td>
+          <td><input type=checkbox name=status value="Active" >Active<br></td>
+        </tr>
+        <tr>
+          <td>Location:</td>
+          <td>
+            <select name=location>
+            {% for entry in wifidomo_locations %}
+              <option {% if entry['location_id'] == wifidomo_locations.location_id %} selected {% endif %}
                   value={{ entry['location_id'] }}>{{ entry['location_name'] }}</option>
-        {% endfor %}
-        </select>
+            {% endfor %}
+            </select>
+          </td>
+        </tr>
+      </table>
     </dl>
     <p>
       <input type=submit name=submit value=Submit>
