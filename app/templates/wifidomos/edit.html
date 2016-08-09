@@ -68,7 +68,7 @@
         </tr>
         <tr>
           <td>Status:</td>
-          <td><input type=checkbox name=status value="Active" >Active<br></td>
+          <td><input type=checkbox name=status value="Active" {% if form.status %} checked {% endif %} >Active<br></td>
         </tr>
         <tr>
           <td>Location:</td>

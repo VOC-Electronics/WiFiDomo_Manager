@@ -194,13 +194,13 @@ def edit_wifidomo(id):
       flash(u'Deleting wifidomo: %s' % data.name)
       return redirect(url_for('wifidomos.index'))
     elif 'submit' in request.form:
-      data.name = request.form.get('name')
-      data.fqdn = request.form.get('fqdn')
-      data.status = request.form.get('status')
-      data.MAC = request.form.get('mac')
-      data.ip4 = request.form.get('ip4')
-      data.ip6 = request.form.get('ip6')
-      data.locationid = request.form.get('location')
+      data.name = request.form.get('name', type=str)
+      data.fqdn = request.form.get('fqdn', type=str)
+      data.status = request.form.get('status', type=bool)
+      data.MAC = request.form.get('mac', type=str)
+      data.ip4 = request.form.get('ip4', type=str)
+      data.ip6 = request.form.get('ip6', type=str)
+      data.locationid = request.form.get('location', type=int)
 
       if app.debug:
         print(data.name)

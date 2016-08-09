@@ -29,7 +29,7 @@ __email__ = 'info@voc-electronics.com'
 '''
 
 from datetime import datetime
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, \
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean, \
      ForeignKey, event
 from sqlalchemy.orm import scoped_session, sessionmaker, backref, relation
 from sqlalchemy.ext.declarative import declarative_base
@@ -117,16 +117,21 @@ class Person(Base):
 
 class WiFiDomo(Base):
   __tablename__ = 'wifidomo'
-  id = Column(Integer, primary_key=True, autoincrement=True)
-  name = Column(String(256), index=True, unique=True, nullable=True)
-  MAC = Column(String(256), unique=True, nullable=True)
+  id = Column(Integer, primary_key=True)
+  name = Column(String, index=True, nullable=True)
+  MAC = Column(String, nullable=True)
   locationid = Column(Integer, nullable=True)
   ip4 = Column(String(16), nullable=True)
-  ip6 = Column(String(128), nullable=True)
-  fqdn = Column(String(256), nullable=True)
-  status = Column(Integer, nullable=True)
+  ip6 = Column(String, nullable=True)
+  fqdn = Column(String, nullable=True)
+  status = Column(Boolean, default=False)
   last_used_rgb = Column(Integer, nullable=True)
-  created = Column(DateTime)
+  created = Column(DateTime,
+                   default=datetime.utcnow,
+                   onupdate=datetime.utcnow)
+  updated_on = Column(DateTime,
+                    default=datetime.utcnow,
+                    onupdate=datetime.utcnow)
 
   def __init__(self, name, MAC, location_id, fqdn, status, ip4, ip6 = 0):
     self.name = name
@@ -137,6 +142,7 @@ class WiFiDomo(Base):
     self.ip6 = ip6
     self.status = status
     self.created = datetime.utcnow()
+    self.updated_on = datetime.utcnow()
 
   def to_json(self):
     return dict( name=self.name, MAC=self.MAC, status=self.status, fqdn=self.fqdn, ip4=self.ip4, ip6=self.ip6, last_used_rgb=self.last_used_rgb )
