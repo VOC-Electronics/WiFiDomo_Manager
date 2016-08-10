@@ -64,9 +64,6 @@ def add_location():
     elif not int(code):
       flash(u'Error: location number required')
       return render_template('locations/new.html')
-    elif not body:
-      flash(u'Please proivde the valid ip4')
-      return render_template('locations/new.html')
     else:
       newloc = Locations(name, code, body)
       db_session.add(newloc)
