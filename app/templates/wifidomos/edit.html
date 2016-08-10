@@ -28,17 +28,6 @@
   <p>
   <h2>Modify the WiFiDomo</h2>
   </p>
-  <p class=nav>
-  <div class=metanav>
-    <li>
-    {% for item in nav.subtop %}
-    <lu class="{{ 'active' if item.is_active else '' }}">
-        <a href="{{ item.url }}">{{ item.label }}</a>
-    </lu>
-    {% endfor %}
-    </li>
-  </div>
-  </p>
   <p>
   <form action="" method=post>
     <dl class=formlist>

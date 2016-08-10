@@ -55,6 +55,9 @@ def add_location():
     code = request.form['code']
     body = request.form['body']
 
+    if 'cancel' in request.form:
+      return redirect(url_for('locations.index'))
+
     if len(name) < 1:
       flash(u'Error: you have to enter a name')
       return render_template('locations/new.html')

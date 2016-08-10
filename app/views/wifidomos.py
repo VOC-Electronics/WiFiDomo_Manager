@@ -94,8 +94,12 @@ def add_wifidomo():
     return render_template('wifidomos/new.html',
                            wifidomo_locations=tempList)
   if request.method == 'POST':
+    if 'cancel' in request.form:
+      return redirect(url_for('wifidomos.index'))
+
     if app.debug:
       print('Processing POST call.')
+
     location_id = request.form.get('location', type=int)
     name = request.form['name']
     fqdn = request.form['fqdn']
@@ -146,7 +150,8 @@ def add_wifidomo():
       db_session.add(wifidomo)
       db_session.commit()
       flash(u'Your wifidomo was added')
-      return redirect('/')
+      return redirect(url_for('wifidomos.index'))
+
     #ToDo: Cleanup the lowerpart of the code as we now have a working database creation script with test data
     tempList = get_location_list_old()
     return render_template('wifidomos/new.html',
