@@ -186,9 +186,9 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 admin = Person('WiFi', 'Domo', 'WiFiDomo Admin', 'WiFiDomo', 'admin@wifidomo.org')
-loc1 = Locations('Unknown', '0', 'Unknown')
-loc2 = Locations('Livingroom', '1', 'Livingroom')
-loc3 = Locations('Kitchen', '2', 'Kitchen')
+loc1 = Locations('Unknown', '00', 'Unknown')
+loc2 = Locations('Livingroom', '01', 'Livingroom')
+loc3 = Locations('Kitchen', '02', 'Kitchen')
 
 session.add(admin)
 session.add(loc1)
