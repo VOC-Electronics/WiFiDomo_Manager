@@ -80,6 +80,7 @@ class WiFiDomo(Base):
   ip6 = Column(String, nullable=True)
   fqdn = Column(String, nullable=True)
   status = Column(Boolean, default=False)
+  powerstatus = Column(Boolean, default=False)
   last_used_rgb = Column(Integer, nullable=True)
   created = Column(DateTime,
                    default=datetime.utcnow,

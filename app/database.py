@@ -125,6 +125,7 @@ class WiFiDomo(Base):
   ip6 = Column(String, nullable=True)
   fqdn = Column(String, nullable=True)
   status = Column(Boolean, default=False)
+  powerstatus = Column(Boolean, default=False)
   last_used_rgb = Column(Integer, nullable=True)
   created = Column(DateTime,
                    default=datetime.utcnow,
@@ -141,11 +142,12 @@ class WiFiDomo(Base):
     self.ip4 = ip4
     self.ip6 = ip6
     self.status = status
+    self.powerstatus = False
     self.created = datetime.utcnow()
     self.updated_on = datetime.utcnow()
 
   def to_json(self):
-    return dict( name=self.name, MAC=self.MAC, status=self.status, fqdn=self.fqdn, ip4=self.ip4, ip6=self.ip6, last_used_rgb=self.last_used_rgb )
+    return dict( name=self.name, MAC=self.MAC, status=self.status, powerstatus=self.powerstatus, fqdn=self.fqdn, ip4=self.ip4, ip6=self.ip6, last_used_rgb=self.last_used_rgb )
 
   @cached_property
   def count(self):
