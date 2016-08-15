@@ -172,8 +172,8 @@ class WiFiNetworks(Base):
 class Locations(Base):
   __tablename__ = 'locations'
   id = Column(Integer, primary_key=True)
-  location_name = Column(String(250), unique=True, nullable=False)
-  location_code = Column(String, nullable=True)
+  location_name = Column(String, unique=True, nullable=False)
+  location_code = Column(Integer, default=0)
   location_description = Column(String, nullable=True)
   created = Column(DateTime)
 

@@ -111,6 +111,7 @@ class WiFiNetworks(Base):
   updated_on = Column(DateTime,
                     default=datetime.utcnow,
                     onupdate=datetime.utcnow)
+
   def __init__(self, wifi_sid, wifi_loc):
     self.wifi_sid = wifi_sid
     self.wifi_loc = wifi_loc
@@ -119,8 +120,8 @@ class WiFiNetworks(Base):
 class Locations(Base):
   __tablename__ = 'locations'
   id = Column(Integer, primary_key=True)
-  location_name = Column(String(250), nullable=False)
-  location_code = Column(String, nullable=True)
+  location_name = Column(String, nullable=False)
+  location_code = Column(Integer, default=0)
   location_description = Column(String, nullable=True)
   created = Column(DateTime,
                    default=datetime.utcnow,
