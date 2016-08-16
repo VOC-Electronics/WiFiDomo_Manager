@@ -47,6 +47,7 @@
       <th>Status:</th>
       <th>MAC:</th>
       <th>IP4:</th>
+      <th>switch on/off</th>
     </tr>
     {% for wifidomo in wifidomo_list %}
     <tr>
@@ -55,6 +56,7 @@
       <td> {% if wifidomo.status %} Active {% else %} Inactive {% endif %}</td>
       <td> {{ wifidomo.MAC }} </td>
       <td> {{ wifidomo.ip4 }} </td>
+      <td> {% if wifidomo.powerstatus %} Off {% else %} On {% endif %}</td>
     </tr>
     {% endfor %}
   </table>
