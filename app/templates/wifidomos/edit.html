@@ -64,9 +64,7 @@
           <td>
             <select name=location>
             {% for entry in wifidomo_locations %}
-              <option {% if entry['location_id'] == wifidomo_locations.location_id %} selected {% endif %}
-                  value={{ entry['location_id'] }}>{{ entry['location_name'] }}</option>
-            {% endfor %}
+              <option{% if form.location == entry.location_id %} selected{% endif %} value={{ entry.location_id }}>{{ entry.location_name }}</option>{% endfor %}
             </select>
           </td>
         </tr>
