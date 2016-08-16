@@ -25,14 +25,29 @@
 {% block body %}
   <small>Please fill in all details.</small>
   <form action="" method=post>
-    <dl class=formlist>
-      <dt>Name:</dt>
-      <dd><input type=text name=name value="{{ form.name }}" size=40>
-      <dt>code:</dt>
-      <dd><input type=text name=location_code value="{{ form.location_code }}" size=20>
-      <dt>Description:</dt>
-      <dd><textarea name=body cols=40 rows=20>{{ form.body }}</textarea>
-    </dl>
+  <table border="0">
+    <caption>Location information</caption>
+    <tbody>
+    <tr>
+      <td>
+        <table border="0" align="top">
+          <tr align="top">
+          <td><a>Name:<a/></td>
+          <td><input type=text name=name value="{{ form.name }}" size=40></td>
+          </tr>
+          <tr>
+          <td>Location code:</td>
+          <td><input type=text name=location_code value="{{ form.location_code }}" size=40></td>
+          </tr>
+          <tr>
+          <td>Description:</td>
+          <td width="80%"><textarea name=body cols=40 rows=20>{{ form.body }}</textarea></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    </tbody>
+  </table>
     <p>
       <input type=submit name=submit value=Submit>
       <input type=submit name=delete value=Delete>
