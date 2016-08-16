@@ -37,6 +37,32 @@ nav.Bar('subtopWD', [
 
 default_location_keys = {'location_id','location_name'}
 
+
+def send_wifidomo_call(ip, action):
+  target = ip
+  action_to_do = action
+  result = False
+
+  if not target:
+    print "No valid IP parsed."
+    return 404
+
+  if not action_to_do:
+    print "No valid action provided"
+    return 501
+  # Return the result of the action.
+  return result
+
+
+
+def switch_domo_onoff(wifidomo):
+  Status = wifidomo.powerstatus
+  if Status:
+    wifidomo.powerstatus = False
+  else:
+    wifidomo.powerstatus = True
+  return wifidomo
+
 def get_location_list():
   location_list = []
   tempList = []
@@ -44,26 +70,13 @@ def get_location_list():
   temp = {}
   for location in locations:
     temp = { str(location.location_name), str(location.location_code)}
-    print(temp)
+#    print(temp)
     tempList.append(dict(zip(default_location_keys, temp)))
-    print(tempList)
+#    print(tempList)
     print('%s - %s' % (location.location_name,location.location_code))
   print(tempList)
   return tempList
 
-def get_location_list_old():
-  location_list = []
-  tempList = []
-  # ToDo: Cleanup the lowerpart of the code as we now have a working database creation script with test data.
-  wifidomo_location_0 = {'1', 'Unknown'}
-  wifidomo_location_1 = {'2', 'Living'}
-  tempList.append(dict(zip(default_location_keys, wifidomo_location_0)))
-  tempList.append(dict(zip(default_location_keys, wifidomo_location_1)))
-  tempList.sort()
-  print('templist')
-  print(tempList)
-  location_list = tempList
-  return location_list
 
 @mod.route('/')
 def index():
@@ -163,7 +176,7 @@ def add_wifidomo():
     # Query the database to get all locations
     # Now use only ony.
     tempList = get_location_list()
-    print(tempList)
+#    print(tempList)
     return render_template('wifidomos/new.html',
                            wifidomo_locations=tempList)
 
