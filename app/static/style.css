@@ -1,4 +1,4 @@
-body            { font-family:  'Georgia', serif; font-size: 17px; color: #000; }
+body            { font-family:  'Georgia', serif; font-size: 17px; color: #000; background: white;}
 a               { color: #004B6B; }
 a:link          { color: #c6006f; }
 a:visited       { color: #743399; }
@@ -6,6 +6,7 @@ a:active,
 a:hover         { color: #ff4b33; }
 a:hover         { color: #6D4100; }
 .box            { width: 1200px; margin: 40px auto; }
+.main           { width: 1200px; margin: 40px auto; }
 h2, h3, h4      { font-family: 'Garamond', 'Georgia', serif; font-weight: normal; }
 h1              { margin: 0 0 30px 0; background: url(/static/flask.png) no-repeat center;
                   height: 165px; }
@@ -17,18 +18,20 @@ h4              { font-size: 19px; margin: 15px 0 5px 0; color: #c6006f; }
 .ig2            { color: #004B6B; }
 .code           { color: #004B6B; }
 p               { line-height: 1.4; }
-.flash          { background: #cee5F5; padding: 0.5em;
-                  border: 1px solid #aacbe2; }
+.flash          { background: #cee5F5; padding: 0.5em; border: 1px solid #aacbe2; }
 .error          { background: #f0d6d6; padding: 0.5em; }
-.page           { margin: 2em auto; width: 35em; border: 5px solid #ccc;
-                  padding: 0.8em; background: white; }
+.page           { margin: 2em auto; width: 35em; border: 5px solid #ccc; padding: 0.8em; background: white; }
 .entries        { list-style: none; margin: 0; padding: 0; }
 .entries li     { margin: 0.8em 1.2em; }
 .entries li h2  { margin-left: -1em; }
 .add-entry      { font-size: 0.9em; border-bottom: 1px solid #ccc; }
 .add-entry dl   { font-weight: bold; }
-.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
-                  margin-bottom: 1em; background: #fafafa; }
+.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em; margin-bottom: 1em; background: white; }
+.nav { width: 100%; margin: 0; padding: 1em; text-align: right; font-size: 0.8em; padding: 0.3em; margin-bottom: 1em; background: white; list-style-type: none;}
+.nav ul { list-style-type: none; padding: 0; }
+.nav ul a { text-decoration: none; }
+
 /* Footer */
 .footer      { font-size: 13px; color: #004B6B; text-align: right; margin-top: 25px; }
 branding     { width: 1000px; }
+

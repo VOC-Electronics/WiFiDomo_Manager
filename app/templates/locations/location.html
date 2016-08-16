@@ -2,7 +2,7 @@
 
 {% block head %}
   {{ super() }}
-  <style type=text/css>
+   <style type=text/css>
     h1 { margin: 0 0 10px 0; background: url({{ url_for('static', filename='voc/logo_wifidomo.png') }}) no-repeat center; width 880px;height: 200px; }
     h1 span, p.tagline { display: none;
   </style>
@@ -22,47 +22,32 @@
   </script>
 {% endblock %}
 
+{% block title %}{{ self.name }}{% endblock %}
+
 {% block body %}
-  <body onload="zoom()">
+  <h2>{{ self.name }}</h2>
+{% if current_user.is_authenticated %}
+  Hi {{ current_user.name }}!
+{% endif %}
   <p class=nav>
   <div class=metanav>
     <li>
-    {% for item in nav.subtopWD %}
+    {% for item in nav.subtop %}
     <lu class="{{ 'active' if item.is_active else '' }}">
         <a href="{{ item.url }}">{{ item.label }}</a>
     </lu>
     {% endfor %}
     </li>
   </div>
+
   </p>
   <p>
-    <h3>Current WiFiDomos : {% if nr_wifidomo %} ( {{ nr_wifidomo }} ) {% endif %}</h3><br>
+    <h3>Current locations : {% if location_count %} ( {{ location_count }} ) {% endif %}</h3><br>
   </p>
-  {% if nr_wifidomo > 0 %}
-  <p>Wifidomos:</p>
-  <table>
-    <tr>
-      <th>Name:</th>
-      <th>FQDN:</th>
-      <th>Status:</th>
-      <th>MAC:</th>
-      <th>IP4:</th>
-      <th>switch on/off</th>
-    </tr>
-    {% for wifidomo in wifidomo_list %}
-    <tr>
-      <td><a href="{{ url_for('.edit_wifidomo',id=wifidomo.id) }}">{{ wifidomo.name}}</a></td>
-      <td> {{ wifidomo.fqdn }} </td>
-      <td> {% if wifidomo.status %} Active {% else %} Inactive {% endif %}</td>
-      <td> {{ wifidomo.MAC }} </td>
-      <td> {{ wifidomo.ip4 }} </td>
-      <td> {% if wifidomo.powerstatus %} Off {% else %} On {% endif %}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  {% else %}
-   <ul>
-    <li>Bla bla</li>
+<ul>
+  {% for location in location_list %}
+    <li><a href="{{ url_for('.edit_location',id=location.id) }}">{{ location.location_name }}</a> ({{ location.location_code }})</li>
+  {% endfor %}
   </ul>
-  {% endif %}
+
 {% endblock %}

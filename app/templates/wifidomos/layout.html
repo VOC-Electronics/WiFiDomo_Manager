@@ -1,11 +1,42 @@
-{% extends "layout.html" %}
+<!doctype html>
 {% block head %}
-  {{ super() }}
-  <link href="{{ url_for('.recent_feed') }}" rel="alternate" title="Recent Flask Snippets" type="application/atom+xml">
-  <style type=text/css>
-    h1 { background-image: url({{ url_for('static', filename='voc/logo_wifidomo.png') }}); }
-  </style>
+<title>{% block title %}Welcome{% endblock %} | WiFiDomo Manager</title>
+<meta charset=utf-8>
+<link rel=stylesheet type=text/css href="{{ url_for('general.static', filename='style.css') }}">
+<link rel="shortcut icon" href="{{ url_for('general.static', filename='favicon.ico') }}">
+<script type="text/javascript">
+function zoom() {
+  document.body.style.zoom = "100%"
+}
+</script>
 {% endblock %}
-{% block body_title %}
-  <h1><span>WiFiDomos:</span></h1>
-{% endblock %}
+
+<div class=box>
+  {% block body_title %}
+    <h1><span>{{ self.title() }}</span></h1>
+  {% endblock %}
+
+  <p class=nav>
+    <div class=metanav>
+    {% for item in nav.top %}
+    <ul class="{{ 'active' if item.is_active else '' }}">
+        <a href="{{ item.url }}">{{ item.label }}</a>
+    </ul>
+    {% endfor %}
+    {% if not session.logged_in %}
+      <a href="{{ url_for('general.login') }}">log in</a>
+    {% else %}
+      <a href="{{ url_for('general.logout') }}">log out</a>
+    {% endif %}
+    </div>
+   {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  {% endfor %}
+  </p>
+
+  {% block body %}{% endblock %}
+
+  <p class=footer>
+    &copy; Copyright 2016 by <a href=http://www.voc-vanleeuwen.com/>V.O.C. Vanleeuwen Opensource Consultancy</a>
+  </p>
+</div>

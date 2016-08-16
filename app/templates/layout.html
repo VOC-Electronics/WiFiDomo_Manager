@@ -2,50 +2,41 @@
 {% block head %}
 <title>{% block title %}Welcome{% endblock %} | WiFiDomo Manager</title>
 <meta charset=utf-8>
-<!--<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style-voc.css') }}">-->
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-<script type=text/javascript
-  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<link rel=stylesheet type=text/css href="{{ url_for('general.static', filename='style.css') }}">
+<link rel="shortcut icon" href="{{ url_for('general.static', filename='favicon.ico') }}">
+  <script type=text/javascript src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript">
+  function zoom() {
+    document.body.style.zoom = "100%"
+  }
+  </script>
 {% endblock %}
-
-<div class=box>
+<div class=main>
   {% block body_title %}
     <h1><span>{{ self.title() }}</span></h1>
   {% endblock %}
-
   <p class=nav>
-    <div class=metanav>
+    <div class=nav>
      <li>
     {% for item in nav.top %}
     <lu class="{{ 'active' if item.is_active else '' }}">
         <a href="{{ item.url }}">{{ item.label }}</a>
     </lu>
     {% endfor %}
-
     {% if not session.logged_in %}
       <a href="{{ url_for('general.login') }}">log in</a>
     {% else %}
       <a href="{{ url_for('general.logout') }}">log out</a>
     {% endif %}
-
     </li>
     </div>
    {% for message in get_flashed_messages() %}
     <div class=flash>{{ message }}</div>
   {% endfor %}
   </p>
-
   {% block body %}{% endblock %}
-
   <p class=footer>
-    &copy; Copyright 2016 by <a href=http://www.voc-vanleeuwen.com/>V.O.C. Vanleeuwen Opensource Consultancy</a><br>
+    &copy; Copyright 2015 - {{ current_year }} by <a href=http://www.voc-vanleeuwen.com/>V.O.C. Vanleeuwen Opensource Consultancy</a><br>
     Source based on code from the <a href=http://lucumr.pocoo.org/>Flask site</a>
   </p>
 </div>
-
-
-  <div class="menu">
-
-  </div>
-

@@ -1,12 +1,8 @@
 {% extends "layout.html" %}
+
 {% block head %}
   {{ super() }}
-   <script type="text/javascript">
-        function zoom() {
-            document.body.style.zoom = "100%"
-        }
-  </script>
-  <style type="text/css">
+   <style type=text/css>
     h1 { margin: 0 0 10px 0; background: url({{ url_for('static', filename='voc/logo_wifidomo.png') }}) no-repeat center; width 880px;height: 200px; }
     h1 span, p.tagline { display: none;
   </style>
@@ -25,17 +21,30 @@
     });
   </script>
 {% endblock %}
+
+{% block title %}{{ self.name }}{% endblock %}
+
 {% block body %}
-<body onload="zoom()">
-  <h2>Login</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-  <form action="{{ url_for('general.login') }}" method=post>
-    <dl>
-      <dt>Username:
-      <dd><input type=text name=username>
-      <dt>Password:
-      <dd><input type=password name=password>
-      <dd><input type=submit value=Login>
+  <p>
+  <form action="" method=post>
+    <dl class=formlist>
+      <dt>Name:</dt>
+      <dd><input type=text name=name value="{{ request.form.name }}" size=40>
+      <dt>code:</dt>
+      <dd><input type=text name=code value="{{ request.form.code }}" size=20>
+      <dt>Description:</dt>
+      <dd><textarea name=body cols=40 rows=20>{{ request.form.body }}</textarea>
     </dl>
+    <p>
+      <input type=submit value="Add location">
+      <input type=submit name=cancel value="Cancel">
+    </p>
   </form>
+  </p>
+  {% if preview %}
+  <div id=preview>
+    <h2>Preview</h2>
+    {{ preview }}
+  </div>
+  {% endif %}
 {% endblock %}

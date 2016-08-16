@@ -1,6 +1,6 @@
 # WiFiDomo_Manager
 ======================
-- Authors: Martijn van Leeuwen, Mano Biletski
+- Authors: Martijn van Leeuwen, Mano Biletsky
 - Twitter: [@RaspberryPiNL]
 - URL: [Website](http://www.voc-electronics.com)
 - Email: [Martijn van Leeuwen](mailto:info@voc-electronics.com)
@@ -8,7 +8,7 @@
 - Version: 0.1
 
 ## Description
-Een flask based website for WiFiDomo.
+Een flask based interface for the WiFiDomo product line.
 
 
 ### Database:
@@ -23,9 +23,25 @@ Een flask based website for WiFiDomo.
 1) Encryption key for use by NGINX
 
 
-## Not Licensed yet
+## Python and other required Libraries:
+* libssl-dev
+* libffi
 
+possibly, if xml is needed:<br>
+* libxslt1-dev
+* libxml2
+* libxml2-dev
+
+## DISCLAIMER
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 ## Version History
-0.0 - Initial code<br>
+* 0.0 - Initial code
 

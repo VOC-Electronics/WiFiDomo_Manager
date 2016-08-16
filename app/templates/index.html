@@ -24,16 +24,17 @@
   {{ super() }}
   <p class=tagline>Mixing Open Source and Electronics.</p>
 {% endblock %}
-
 {% block body %}
+ <body onload="zoom()">
   <div class="header">
-    <h3 class="text-muted">Current active WiFiDomos:</h3>
+    <h3 class="text-muted">Some statistics:</h3>
   </div>
   <pre>
-    <span class=ig2>
-      Database entries:
-      <ul class=overzicht>
-        <li><em>Unbelievable.  No entries here so far</em>
+    <span class="ig2">
+      <ul class="overzicht">
+        <li>{% if nr_wifidomo > 0 %}Number of WiFiDomos: {{ nr_wifidomo }} {% else %}Number of WiFiDomos: None!{% endif %}</li>
+        <li>Number of Locations: {{ nr_locations }}</li>
+        <li>Number of Users: {{ nr_users }}</li>
       </ul>
     </span>
   </pre>
