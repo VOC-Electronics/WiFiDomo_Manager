@@ -66,23 +66,17 @@ def switch_domo_onoff(wifidomo):
 def get_location_list():
   tempList = []
   locations = Locations.query.order_by(Locations.id)
-  temp = None
   for location in locations:
-    tmp_code = int(location.id)
-    tmp_name = str(location.location_name)
-    if app.debug:
-      print('Name: %s, ID: %s' % (tmp_name, tmp_code))
-    temp = {tmp_name, tmp_code}
-    temp2 = zip({'location_id', 'location_name'}, {tmp_name, tmp_code})
-    if app.debug:
-      print('temp2: %s' % temp2)
-    temp3 = dict(temp2)
-    if app.debug:
-      print('temp3: %s' % temp3)
-    tempList.append(temp3)
+    NewList3 = []
+    newList = ('location_id', int(location.id))
+    newList2 = ('location_name', str(location.location_name))
+    NewList3.append(newList)
+    NewList3.append(newList2)
+    zippedlistdictionary = dict(NewList3)
+    tempList.append(zippedlistdictionary)
     #tempList.append(dict(zip(default_location_keys, temp)))
     if app.debug:
-      print('Appended to list: %s' % temp)
+      print('Appended to list: %s' % zippedlistdictionary)
   if app.debug:
     print('tempList value:')
     print(tempList)
@@ -179,7 +173,7 @@ def add_wifidomo():
       return redirect(url_for('wifidomos.index'))
 
     #ToDo: Cleanup the lowerpart of the code as we now have a working database creation script with test data
-    tempList = get_location_list_old()
+    tempList = get_location_list()
     return render_template('wifidomos/new.html',
                            wifidomo_locations=tempList)
 
@@ -217,7 +211,6 @@ def edit_wifidomo(id):
 
   tempList = get_location_list()
 
-  #ToDo: Need to figure out why the template does not select the correct location.
   if request.method == 'POST':
     if 'delete' in request.form:
       db_session.delete(data)
@@ -231,7 +224,7 @@ def edit_wifidomo(id):
       data.MAC = request.form.get('mac', type=str)
       data.ip4 = request.form.get('ip4', type=str)
       data.ip6 = request.form.get('ip6', type=str)
-      data.locationid = request.form.get('location', type=int)
+      data.locationid = int(request.form.get('location', type=int))
 
       if app.debug:
         print(data.name)
