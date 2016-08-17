@@ -7,6 +7,7 @@ a:hover         { color: #ff4b33; }
 a:hover         { color: #6D4100; }
 .box            { width: 1200px; margin: 40px auto; }
 .main           { width: 1200px; margin: 40px auto; }
+.overzicht      { font-size: 0.7em; margin: 5px 0 5px 0;}
 h2, h3, h4      { font-family: 'Garamond', 'Georgia', serif; font-weight: normal; }
 h1              { margin: 0 0 30px 0; background: url(/static/flask.png) no-repeat center;
                   height: 165px; }
