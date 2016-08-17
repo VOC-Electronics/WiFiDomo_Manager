@@ -73,8 +73,8 @@ nav.Bar('top', [
   nav.Item('Home', 'general.index'),
   nav.Item('WiFiDomo', 'wifidomos.index'),
   nav.Item('Locations', 'locations.index'),
-  nav.Item('Presets', 'general.index'),
-  nav.Item('Patterns', 'general.index'),
+  nav.Item('Presets', 'presets.index'),
+  nav.Item('Patterns', 'patterns.index'),
   nav.Item('Overview', 'general.index'),
   nav.Item('About', 'general.index')
 ])
@@ -127,6 +127,8 @@ def logout():
 from app.views import general
 from app.views import wifidomos
 from app.views import locations
+from app.views import patterns
+from app.views import presets
 
 if app.debug:
   print('Regisering blueprint: General')
@@ -143,6 +145,18 @@ if app.debug:
 app.register_blueprint(locations.mod,
                        url_prefix='/locations',
                        template_folder='templates/locations')
+
+if app.debug:
+  print('Registering blueprint: Patterns')
+app.register_blueprint(patterns.mod,
+                       url_prefix='/patterns',
+                       template_folder='templates/patterns')
+
+if app.debug:
+  print('Registering blueprint: Presets')
+app.register_blueprint(presets.mod,
+                       url_prefix='/presets',
+                       template_folder='templates/presets')
 
 print('Using database: %s' % str(app.config['DB_FILE']))
 
