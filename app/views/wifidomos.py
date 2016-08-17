@@ -35,7 +35,7 @@ nav.Bar('subtopWD', [
   nav.Item('Overview', 'wifidomos.overview')
 ])
 
-default_location_keys = {'location_id','location_name'}
+default_location_keys = {'location_id', 'location_name'}
 
 
 def send_wifidomo_call(ip, action):
@@ -64,17 +64,28 @@ def switch_domo_onoff(wifidomo):
   return wifidomo
 
 def get_location_list():
-  location_list = []
   tempList = []
-  locations = Locations.query.all()
-  temp = {}
+  locations = Locations.query.order_by(Locations.id)
+  temp = None
   for location in locations:
-    temp = { str(location.location_name), str(location.location_code)}
-#    print(temp)
-    tempList.append(dict(zip(default_location_keys, temp)))
-#    print(tempList)
-    print('%s - %s' % (location.location_name,location.location_code))
-  print(tempList)
+    tmp_code = int(location.id)
+    tmp_name = str(location.location_name)
+    if app.debug:
+      print('Name: %s, ID: %s' % (tmp_name, tmp_code))
+    temp = {tmp_name, tmp_code}
+    temp2 = zip({'location_id', 'location_name'}, {tmp_name, tmp_code})
+    if app.debug:
+      print('temp2: %s' % temp2)
+    temp3 = dict(temp2)
+    if app.debug:
+      print('temp3: %s' % temp3)
+    tempList.append(temp3)
+    #tempList.append(dict(zip(default_location_keys, temp)))
+    if app.debug:
+      print('Appended to list: %s' % temp)
+  if app.debug:
+    print('tempList value:')
+    print(tempList)
   return tempList
 
 
@@ -82,9 +93,11 @@ def get_location_list():
 def index():
   nr_wifidomo = WiFiDomo.query.count()
   wifidomos = WiFiDomo.query.all()
+  locations = Locations.query.all()
   return render_template('wifidomos/index.html',
-                         nr_wifidomo=nr_wifidomo,
-                         wifidomo_list=wifidomos)
+                         nr_wifidomo = nr_wifidomo,
+                         wifidomo_list = wifidomos,
+                         locations_list = locations)
 
 
 @mod.route('/overview', methods=['GET'])
@@ -99,7 +112,7 @@ def overview():
 @mod.route('/add/', methods=['GET', 'POST', 'PUT'])
 #@requires_login
 def add_wifidomo():
-  tempList = get_location_list_old()
+  tempList = get_location_list()
   if request.method == 'PUT':
     if app.debug:
       print('Processing PUT call.')

@@ -97,7 +97,9 @@ class WiFiDomo(Base):
     self.ip4 = ip4
     self.ip6 = ip6
     self.status = status
+    self.powerstatus = False
     self.created = datetime.utcnow()
+    self.updated_on = datetime.utcnow()
 
 class WiFiNetworks(Base):
   __tablename__ = 'wifinetworks'
@@ -135,6 +137,8 @@ class Locations(Base):
     self.location_code = location_code
     self.location_description = location_description
     self.created = datetime.utcnow()
+    self.updated_on = datetime.utcnow()
+
 
 class Loginlog(Base):
   __tablename__ = 'loginlog'
@@ -187,12 +191,14 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 admin = Person('WiFi', 'Domo', 'WiFiDomo Admin', 'WiFiDomo', 'admin@wifidomo.org')
-loc1 = Locations('Unknown', '00', 'Unknown')
-loc2 = Locations('Livingroom', '01', 'Livingroom')
-loc3 = Locations('Kitchen', '02', 'Kitchen')
-
+loc1 = Locations('Unknown', 1, 'Unknown')
+loc2 = Locations('Livingroom', 2, 'Livingroom')
+loc3 = Locations('Kitchen', 3, 'Kitchen')
+#wd = WiFiDomo(name, MAC, location_id, fqdn, status, ip4, ip6=0)
+wd = WiFiDomo('wifidomo01', '', 2, 'wifidomo01', False, '')
 session.add(admin)
 session.add(loc1)
 session.add(loc2)
 session.add(loc3)
+session.add(wd)
 session.commit()
