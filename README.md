@@ -43,5 +43,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ## Version History
+* 0.1 - Pre-Alpha (Only add/delete/modify wifidomos and locations work.)
 * 0.0 - Initial code
 
