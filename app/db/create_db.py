@@ -178,6 +178,12 @@ class Pattern(Base):
                     default=datetime.utcnow,
                     onupdate=datetime.utcnow)
 
+  def __init__(self, name):
+    self.name = name
+    self.created = datetime.utcnow()
+    self.updated_on = datetime.utcnow()
+
+
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.
 engine = create_engine('sqlite:///wifidomo.db',
