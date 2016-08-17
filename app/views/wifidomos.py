@@ -66,7 +66,6 @@ def switch_domo_onoff(wifidomo):
 def get_location_list():
   tempList = []
   locations = Locations.query.order_by(Locations.id)
-  #locations = Locations.query.all()
   temp = None
   for location in locations:
     tmp_code = int(location.id)
@@ -75,9 +74,11 @@ def get_location_list():
       print('Name: %s, ID: %s' % (tmp_name, tmp_code))
     temp = {tmp_name, tmp_code}
     temp2 = zip({'location_id', 'location_name'}, {tmp_name, tmp_code})
-    print('temp2: %s' % temp2)
+    if app.debug:
+      print('temp2: %s' % temp2)
     temp3 = dict(temp2)
-    print('temp3: %s' % temp3)
+    if app.debug:
+      print('temp3: %s' % temp3)
     tempList.append(temp3)
     #tempList.append(dict(zip(default_location_keys, temp)))
     if app.debug:
