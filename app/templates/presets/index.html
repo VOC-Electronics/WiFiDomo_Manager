@@ -22,6 +22,19 @@
 {% endblock %}
 {% block body %}
   <body onload="zoom()">
+  {% if nav.subtopPresets %}
+  <p class=nav>
+  <div class=metanav>
+    <li>
+    {% for item in nav.subtopPresets %}
+    <lu class="{{ 'active' if item.is_active else '' }}">
+        <a href="{{ item.url }}">{{ item.label }}</a>
+    </lu>
+    {% endfor %}
+    </li>
+  </div>
+  </p>
+  {% endif %}
   <p>
     <h3>Current available Presets : {% if nr_presets %} ( {{ nr_presets }} ) {% else %} ( None! ) {% endif %}</h3><br>
   </p>
@@ -30,20 +43,16 @@
   <table>
     <tr>
       <th>Name:</th>
-      <th>FQDN:</th>
-      <th>Status:</th>
-      <th>MAC:</th>
-      <th>IP4:</th>
-      <th>switch on/off</th>
+      <th>R:</th>
+      <th>G:</th>
+      <th>B:</th>
     </tr>
-    {% for wifidomo in wifidomo_list %}
+    {% for preset in preset_list %}
     <tr>
-      <td><a href="{{ url_for('.edit_wifidomo',id=wifidomo.id) }}">{{ wifidomo.name}}</a></td>
-      <td> {{ wifidomo.fqdn }} </td>
-      <td> {% if wifidomo.status %} Active {% else %} Inactive {% endif %}</td>
-      <td> {{ wifidomo.MAC }} </td>
-      <td> {{ wifidomo.ip4 }} </td>
-      <td> {% if wifidomo.powerstatus %} Off {% else %} On {% endif %}</td>
+      <td><a href="{{ url_for('.edit_preset',id=preset.id) }}">{{ preset.name}}</a></td>
+      <td> {{ preset.r_code }} </td>
+      <td> {{ preset.g_code }} </td>
+      <td> {{ preset.b_code }} </td>
     </tr>
     {% endfor %}
   </table>
