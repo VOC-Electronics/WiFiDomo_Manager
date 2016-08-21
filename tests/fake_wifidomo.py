@@ -19,6 +19,7 @@ __email__ = 'info@voc-electronics.com'
 '''
 import argparse
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+import urlparse
 
 DEFAULT_HOST = '127.0.0.1'
 DEFAULT_PORT = 8800
@@ -98,6 +99,24 @@ WEBPAGE = "" \
 
 
 class RequestHandler(BaseHTTPRequestHandler):
+  r_code = 0
+  g_code = 0
+  b_code = 0
+
+  def get_rgb_string(self):
+    rgb_code = str(self.get_r_code()) + ":" + str(self.get_g_code()) + ":" + str(self.get_b_code())
+    return rgb_code
+
+  def get_r_code(self):
+    return self.r_code
+
+  def get_g_code(self):
+    return self.g_code
+
+  def get_b_code(self):
+    return self.b_code
+
+
   """ Custom request handler"""
   def do_HEAD(self):
     self.send_response(200)
@@ -107,12 +126,15 @@ class RequestHandler(BaseHTTPRequestHandler):
   def do_GET(self):
     """ Handler for the GET requests """
     if self.path == "/status":
-      handle_status_call(self)
+      self.send_response(200)
+      self.send_header('Content-type','text/html')
+      self.end_headers()
+      value = "[" + self.get_r_code() + ":" + self.get_g_code() + ":" + self.get_b_code() + "]"
+      self.wfile.write(value)
     else:
       self.send_response(200)
       self.send_header('Content-type','text/html')
       self.end_headers()
-      # Send the message to browser
       self.wfile.write(WEBPAGE)
 
   def do_POST(self):
@@ -121,22 +143,30 @@ class RequestHandler(BaseHTTPRequestHandler):
       self.send_response(200)
       self.send_header('Content-type','text/html')
       self.end_headers()
-      # Send the message to browser
       self.wfile.write("Thanks!")
     elif self.path == "/":
       print(self.headers)
       self.send_response(200)
       self.send_header('Content-type', 'text/html')
       self.end_headers()
-      # Send the message to browser
       self.wfile.write("Thanks!")
     else:
-      print("Bla")
-      print(self.headers)
+      parsed_path = urlparse.urlparse(self.path)
+      '''Input Values send to WiFiDomo: r=967&g=1008&b=417'''
+      query = parsed_path.query
+      values = query.split('&')
+      r_code = values[0].split('=')[1]
+      g_code = values[1].split('=')[1]
+      b_code = values[2].split('=')[1]
+      print(r_code)
+      print(g_code)
+      print(b_code)
+      RequestHandler.r_code = r_code
+      RequestHandler.g_code = g_code
+      RequestHandler.b_code = b_code
       self.send_response(200)
       self.send_header('Content-type','text/html')
       self.end_headers()
-      # Send the message to browser
       self.wfile.write("Thanks!")
 
 
@@ -147,39 +177,9 @@ class CustomHTTPServer(HTTPServer):
     HTTPServer.__init__(self, server_address, RequestHandler)
 
 
-class RGB_Codes(RequestHandler):
-  r_code = 0
-  g_code = 0
-  b_code = 0
-
-  def get_rgb_string(self):
-    rgb_code = str(self.r_code) + ":" + str(self.g_code) + ":" + str(self.b_code)
-    return rgb_code
-
-  def set_r_code(self, r_value):
-    if r_value:
-      self.r_code = r_value
-
-  def set_g_code(self, g_value):
-    if g_value:
-      self.g_code = g_value
-
-  def set_b_code(self, b_value):
-    if b_value:
-      self.b_code = b_value
-
-
-def handle_status_call(self):
-  self.send_response(200)
-  self.send_header('Content-type', 'text/html')
-  self.end_headers()
-  # Send the message to browser
-  self.wfile.write("[954:1024:0]")
-
-
 def run_server(port):
   try:
-    server= CustomHTTPServer(DEFAULT_HOST, port)
+    server = CustomHTTPServer(DEFAULT_HOST, port)
     print "Fake WiFiDomo HTTP server started on port: %s" % port
     server.serve_forever()
   except Exception, err:
