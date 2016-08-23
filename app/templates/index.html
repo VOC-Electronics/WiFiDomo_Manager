@@ -29,15 +29,13 @@
   <div class="header">
     <h3 class="text-muted">Some statistics:</h3>
   </div>
-  <pre>
-    <span class="ig2">
-      <ul class="overzicht">
-        <li>{% if nr_wifidomo > 0 %}Number of WiFiDomos: {{ nr_wifidomo }} {% else %}Number of WiFiDomos: None!{% endif %}</li>
-        <li>Number of Locations: {{ nr_locations }}</li>
-        <li>Number of Users: {{ nr_users }}</li>
-        <li>Number of Presets: {{ nr_presets }}</li>
-        <li>Number of Patterns: {{ nr_patterns }}</li>
-      </ul>
-    </span>
-  </pre>
+  <span class="ig2">
+    <ul class="overzicht">
+      <li>{% if nr_wifidomo > 0 %}Number of WiFiDomos: {{ nr_wifidomo }} {% else %}Number of WiFiDomos: None!{% endif %}</li>
+      <li>Number of Locations: {{ nr_locations }}</li>
+      <li>Number of Users: {{ nr_users }}</li>
+      <li>Number of Presets: {{ nr_presets }}</li>
+      <li>Number of Patterns: {{ nr_patterns }}</li>
+    </ul>
+  </span>
 {% endblock %}

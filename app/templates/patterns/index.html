@@ -22,8 +22,21 @@
 {% endblock %}
 {% block body %}
   <body onload="zoom()">
+  {% if nav.subtopPatterns %}
+  <p class=nav>
+  <div class=metanav>
+    <li>
+    {% for item in nav.subtopPatterns %}
+    <lu class="{{ 'active' if item.is_active else '' }}">
+        <a href="{{ item.url }}">{{ item.label }}</a>
+    </lu>
+    {% endfor %}
+    </li>
+  </div>
+  </p>
+  {% endif %}
   <p>
-    <h3>Current available Patterns : {% if nr_patterns %} ( {{ nr_patterns }} ) {% else %} ( None! ) {% endif %}</h3><br>
+    <h3 class=TitleHeader>Current available Patterns : {% if nr_patterns %} ( {{ nr_patterns }} ) {% else %} ( None! ) {% endif %}</h3><br>
   </p>
   {% if nr_patterns > 0 %}
   <p>Patterns:</p>
