@@ -23,6 +23,7 @@ from app.wifidomo_manager import nav, app
 from collections import OrderedDict
 from app.database import WiFiDomo, Locations, db_session, Preset
 import requests
+from collections import OrderedDict
 
 mod = Blueprint('wifidomos', __name__,
                 url_prefix='/wifidomo',
@@ -130,8 +131,15 @@ def switch_preset(id):
     g_code = preset_data.g_code
     b_code = preset_data.b_code
 
-    r = requests.post("http://" + targeturl , params={'r': r_code, 'g': g_code, 'b': b_code})
-    print(r.status_code, r.reason)
+
+    parameter1 = ('r', int(r_code))
+    parameter2 = ('g', int(g_code))
+    parameter3 = ('b', int(b_code))
+    parameters = OrderedDict([parameter1, parameter2, parameter3])
+    r = requests.post("http://" + targeturl , params=parameters)
+
+    if app.debug:
+      print(r.status_code, r.reason)
 
     if r.status_code == requests.codes.ok:
       wifidomo.status = True
@@ -164,9 +172,9 @@ def switch_wifidomo(id):
   targeturl = wifidomo.ip4
 
   if wifidomo.status:
-    last_used_b = 0
-    last_used_g = 0
-    last_used_r = 0
+    last_used_b = 1023
+    last_used_g = 1023
+    last_used_r = 1023
     status = False
   else:
     last_used_r = wifidomo.last_used_r
@@ -183,9 +191,10 @@ def switch_wifidomo(id):
     if r.status_code == requests.codes.ok:
       wifidomo.status = status
       wifidomo.powerstatus = status
-      wifidomo.last_used_r = last_used_r
-      wifidomo.last_used_b = last_used_b
-      wifidomo.last_used_g = last_used_g
+      if status == False:
+        wifidomo.last_used_r = last_used_r
+        wifidomo.last_used_b = last_used_b
+        wifidomo.last_used_g = last_used_g
       db_session.commit()
 
   flash(u'Changing state of the wifidomo')
