@@ -126,7 +126,10 @@ class WiFiDomo(Base):
   fqdn = Column(String, nullable=True)
   status = Column(Boolean, default=False)
   powerstatus = Column(Boolean, default=False)
-  last_used_rgb = Column(Integer, nullable=True)
+  last_used_r = Column(Integer)
+  last_used_g = Column(Integer)
+  last_used_b = Column(Integer)
+  last_used_preset = Column(Integer)
   created = Column(DateTime,
                    default=datetime.utcnow,
                    onupdate=datetime.utcnow)

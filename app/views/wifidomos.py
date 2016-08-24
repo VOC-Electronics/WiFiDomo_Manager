@@ -21,7 +21,8 @@ from app.utils import requires_login, request_wants_json
 from app.wifidomo_manager import verify_password
 from app.wifidomo_manager import nav, app
 from collections import OrderedDict
-from app.database import WiFiDomo, Locations, db_session
+from app.database import WiFiDomo, Locations, db_session, Preset
+import requests
 
 mod = Blueprint('wifidomos', __name__,
                 url_prefix='/wifidomo',
@@ -74,7 +75,6 @@ def get_location_list():
     NewList3.append(newList2)
     zippedlistdictionary = dict(NewList3)
     tempList.append(zippedlistdictionary)
-    #tempList.append(dict(zip(default_location_keys, temp)))
     if app.debug:
       print('Appended to list: %s' % zippedlistdictionary)
   if app.debug:
@@ -88,10 +88,12 @@ def index():
   nr_wifidomo = WiFiDomo.query.count()
   wifidomos = WiFiDomo.query.all()
   locations = Locations.query.all()
+  presets = Preset.query.all()
   return render_template('wifidomos/index.html',
                          nr_wifidomo = nr_wifidomo,
                          wifidomo_list = wifidomos,
-                         locations_list = locations)
+                         locations_list = locations,
+                         wifidomo_presets = presets)
 
 
 @mod.route('/overview', methods=['GET'])
@@ -102,6 +104,97 @@ def overview():
   flash(u'Not much available now, maybe in a future release')
   return render_template('wifidomos/index.html',
                          nr_wifidomo=nr_wifidomo)
+
+
+@mod.route('/switch_preset/<int:id>', methods=['POST'])
+def switch_preset(id):
+  wifidomo = WiFiDomo.query.get(id)
+  if wifidomo is None:
+    abort(404)
+  targeturl = wifidomo.ip4
+
+  preset_id = request.form.get('preset', type=int)
+  if not preset_id:
+    if preset_id == 0:
+      pass
+    else:
+      abort(404)
+  else:
+    if app.debug:
+      print('Preset parsed: %s' % str(preset_id))
+    preset_data = Preset.query.get(preset_id)
+    if preset_data is None:
+      abort(404)
+
+    r_code = preset_data.r_code
+    g_code = preset_data.g_code
+    b_code = preset_data.b_code
+
+    r = requests.post("http://" + targeturl , params={'r': r_code, 'g': g_code, 'b': b_code})
+    print(r.status_code, r.reason)
+
+    if r.status_code == requests.codes.ok:
+      wifidomo.status = True
+      wifidomo.powerstatus = True
+      wifidomo.last_used_r = r_code
+      wifidomo.last_used_b = g_code
+      wifidomo.last_used_g = b_code
+      wifidomo.last_used_preset = preset_id
+      db_session.commit()
+
+  if request.method == 'POST' or id:
+    if app.debug:
+      print('Processing switch_preset Post/id request.')
+
+
+  flash(u'Changing state of the wifidomo')
+
+  if request.method == 'GET':
+    pass
+
+  return redirect(url_for('wifidomos.index'))
+
+@mod.route('/switch/<int:id>', methods=['POST', 'GET'])
+def switch_wifidomo(id):
+  wifidomo = WiFiDomo.query.get(id)
+  if wifidomo is None:
+    abort(404)
+
+  status = None
+  targeturl = wifidomo.ip4
+
+  if wifidomo.status:
+    last_used_b = 0
+    last_used_g = 0
+    last_used_r = 0
+    status = False
+  else:
+    last_used_r = wifidomo.last_used_r
+    last_used_g = wifidomo.last_used_g
+    last_used_b = wifidomo.last_used_b
+    status = True
+
+
+  if request.method == 'POST' or id:
+    print('Processing Switch Post/id request.')
+    r = requests.post("http://" + targeturl , params={'r': last_used_r, 'g': last_used_g, 'b': last_used_b})
+    print(r.status_code, r.reason)
+
+    if r.status_code == requests.codes.ok:
+      wifidomo.status = status
+      wifidomo.powerstatus = status
+      wifidomo.last_used_r = last_used_r
+      wifidomo.last_used_b = last_used_b
+      wifidomo.last_used_g = last_used_g
+      db_session.commit()
+
+  flash(u'Changing state of the wifidomo')
+
+  if request.method == 'GET':
+    pass
+
+  return redirect(url_for('wifidomos.index'))
+
 
 @mod.route('/add/', methods=['GET', 'POST', 'PUT'])
 #@requires_login
