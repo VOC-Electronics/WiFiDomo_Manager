@@ -78,5 +78,9 @@ def search():
         results = perform_search(q, page=page)
         if results is None:
             abort(404)
-    return render_template('general/search.html', results=results, q=q)
+    return render_template('search.html', results=results, q=q)
 
+
+@mod.route('/about')
+def about():
+  return render_template('about.html')

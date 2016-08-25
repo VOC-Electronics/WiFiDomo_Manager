@@ -74,9 +74,9 @@ nav.Bar('top', [
   nav.Item('WiFiDomo', 'wifidomos.index'),
   nav.Item('Locations', 'locations.index'),
   nav.Item('Presets', 'presets.index'),
-  nav.Item('Patterns', 'patterns.index'),
-  nav.Item('Overview', 'general.index'),
-  nav.Item('About', 'general.index')
+#  nav.Item('Patterns', 'patterns.index'),
+#  nav.Item('Overview', 'general.index'),
+  nav.Item('About', 'general.about')
 ])
 
 '''

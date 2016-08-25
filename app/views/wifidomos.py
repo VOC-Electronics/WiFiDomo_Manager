@@ -24,6 +24,7 @@ from collections import OrderedDict
 from app.database import WiFiDomo, Locations, db_session, Preset
 import requests
 from collections import OrderedDict
+import subprocess
 
 mod = Blueprint('wifidomos', __name__,
                 url_prefix='/wifidomo',
@@ -40,6 +41,13 @@ nav.Bar('subtopWD', [
 default_location_keys = {'location_id', 'location_name'}
 
 
+def QueryDomoStatus(target):
+  if not target:
+    print('Somehow the target to query was empty.')
+    abort(502)
+  Status = -1
+  return Status
+
 def send_wifidomo_call(ip, action):
   target = ip
   action_to_do = action
@@ -55,15 +63,6 @@ def send_wifidomo_call(ip, action):
   # Return the result of the action.
   return result
 
-
-
-def switch_domo_onoff(wifidomo):
-  Status = wifidomo.powerstatus
-  if Status:
-    wifidomo.powerstatus = False
-  else:
-    wifidomo.powerstatus = True
-  return wifidomo
 
 def get_location_list():
   tempList = []
@@ -113,6 +112,7 @@ def switch_preset(id):
   if wifidomo is None:
     abort(404)
   targeturl = wifidomo.ip4
+  targetport = wifidomo.port
 
   preset_id = request.form.get('preset', type=int)
   if not preset_id:
@@ -136,7 +136,7 @@ def switch_preset(id):
     parameter2 = ('g', int(g_code))
     parameter3 = ('b', int(b_code))
     parameters = OrderedDict([parameter1, parameter2, parameter3])
-    r = requests.post("http://" + targeturl , params=parameters)
+    r = requests.post("http://" + targeturl + ":" + str(targetport), params=parameters)
 
     if app.debug:
       print(r.status_code, r.reason)
@@ -168,8 +168,33 @@ def switch_wifidomo(id):
   if wifidomo is None:
     abort(404)
 
+  targetport = wifidomo.port
   status = None
-  targeturl = wifidomo.ip4
+  print('Check FQDN: %s' % wifidomo.fqdn)
+  ''' Build up the target URL, first see if we have a FQDN, otherwise check for an IP.'''
+  if len(wifidomo.fqdn) > 0:
+    if len(wifidomo.ip4) < 1:
+      targeturl = wifidomo.fqdn
+      eping = subprocess.Popen(["ping", "-c", "1" , targeturl], stdout=subprocess.PIPE)
+      output, err = eping.communicate()
+      if err:
+        print('Error executing ping to %s, received error: %s' % (targeturl, err))
+        abort(501)
+      if app.debug:
+        print('Ping Results for %s' % targeturl)
+        print(output)
+    else:
+      targeturl = wifidomo.ip4
+      eping = subprocess.Popen([ "ping", "-c", "1", targeturl ], stdout=subprocess.PIPE)
+      output, err = eping.communicate()
+      if err:
+        print('Error executing ping to %s, received error: %s' % (targeturl, err))
+        abort(501)
+      if app.debug:
+        print('Ping Results for %s' % targeturl)
+        print(output)
+
+  currentstatus = QueryDomoStatus(targeturl)
 
   if wifidomo.status:
     last_used_b = 1023
@@ -185,7 +210,7 @@ def switch_wifidomo(id):
 
   if request.method == 'POST' or id:
     print('Processing Switch Post/id request.')
-    r = requests.post("http://" + targeturl , params={'r': last_used_r, 'g': last_used_g, 'b': last_used_b})
+    r = requests.post("http://" + targeturl + ":" + str(targetport), params={'r': last_used_r, 'g': last_used_g, 'b': last_used_b})
     print(r.status_code, r.reason)
 
     if r.status_code == requests.codes.ok:
@@ -205,16 +230,11 @@ def switch_wifidomo(id):
   return redirect(url_for('wifidomos.index'))
 
 
-@mod.route('/add/', methods=['GET', 'POST', 'PUT'])
+@mod.route('/add/', methods=['GET', 'POST'])
 #@requires_login
 def add_wifidomo():
   tempList = get_location_list()
-  if request.method == 'PUT':
-    if app.debug:
-      print('Processing PUT call.')
-    tempList = get_location_list()
-    return render_template('wifidomos/new.html',
-                           wifidomo_locations=tempList)
+
   if request.method == 'POST':
     if 'cancel' in request.form:
       return redirect(url_for('wifidomos.index'))
@@ -227,6 +247,7 @@ def add_wifidomo():
     fqdn = request.form['fqdn']
     mac = request.form.get('mac', type=str)
     ip4 = request.form['ip4']
+    port = request.form.get('port', type=int)
     status = request.form.get('status', type=bool)
     ip6 = request.form.get('ip6', type=str)
 
@@ -241,6 +262,9 @@ def add_wifidomo():
 
     if not ip4:
       ip4='0.0.0.0'
+
+    if not port:
+      port=80
 
     if not ip6:
       ip6 = ':0'
@@ -259,7 +283,8 @@ def add_wifidomo():
       print('Location id: %s' % str(location_id))
       print('fqdn: %s' % fqdn)
       print('Mac: %s' % mac)
-      print ('ip4: %s' % ip4)
+      print('ip4: %s' % ip4)
+      print('Port: %s' % str(port))
       print('Status: %s' % status)
       print('ip6: %s' % str(ip6))
       if location:
@@ -268,7 +293,7 @@ def add_wifidomo():
 
 
     if location is not None:
-      wifidomo = WiFiDomo(name, mac, location_id, fqdn, status, ip4, ip6)
+      wifidomo = WiFiDomo(name, mac, location_id, fqdn, status, ip4, ip6, port)
       db_session.add(wifidomo)
       db_session.commit()
       flash(u'Your wifidomo was added')
@@ -299,6 +324,7 @@ def edit_wifidomo(id):
   form = dict(name=data.name,
               ip4 = data.ip4,
               ip6 = data.ip6,
+              port = data.port,
               mac = data.MAC,
               fqdn = data.fqdn,
               location = data.locationid,
@@ -309,6 +335,7 @@ def edit_wifidomo(id):
     print(data.ip4)
     print(data.ip6)
     print(data.fqdn)
+    print(data.port)
     print(data.locationid)
 
   tempList = get_location_list()
@@ -326,6 +353,7 @@ def edit_wifidomo(id):
       data.MAC = request.form.get('mac', type=str)
       data.ip4 = request.form.get('ip4', type=str)
       data.ip6 = request.form.get('ip6', type=str)
+      data.port = request.form.get('port', type=int)
       data.locationid = int(request.form.get('location', type=int))
 
       if app.debug:
