@@ -55,7 +55,7 @@
       <td> {% if wifidomo.status %} Active {% else %} Inactive {% endif %}</td>
       <td> {{ wifidomo.MAC }} </td>
       <td> {{ wifidomo.ip4 }} </td>
-      <td><a href = "{{ url_for('wifidomos.switch_wifidomo', __METHOD_OVERRIDE__='POST', id=wifidomo.id ) }}">{% if wifidomo.powerstatus %} Off {% else %} On {% endif %}</a></td>
+      <td> {% if not wifidomo.status %} Use presets {% else %}<a href = "{{ url_for('wifidomos.switch_wifidomo', __METHOD_OVERRIDE__='POST', id=wifidomo.id ) }}">Off</a>{% endif %}</td>
       <td>
         <form action="{{ url_for('wifidomos.switch_preset', id=wifidomo.id) }}" method=post>
         <select name=preset>
