@@ -139,6 +139,8 @@ def switch_preset(id):
     r = requests.post("http://" + targeturl + ":" + str(targetport), params=parameters)
 
     if app.debug:
+      print('Parameters: %s' % parameters)
+      print('URL: %s' % str(r.url))
       print(r.status_code, r.reason)
 
     if r.status_code == requests.codes.ok:
