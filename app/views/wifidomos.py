@@ -135,7 +135,7 @@ def switch_preset(id):
     parameter1 = ('r', int(r_code))
     parameter2 = ('g', int(g_code))
     parameter3 = ('b', int(b_code))
-    parameters = OrderedDict([parameter1, parameter2, parameter3])
+    parameters = OrderedDict((parameter1, parameter2, parameter3))
     r = requests.post("http://" + targeturl + ":" + str(targetport), params=parameters)
 
     if app.debug:
@@ -212,7 +212,7 @@ def switch_wifidomo(id):
   parameter1 = ('r', int(last_used_r))
   parameter2 = ('g', int(last_used_g))
   parameter3 = ('b', int(last_used_b))
-  parameters = OrderedDict([parameter1, parameter2, parameter3])
+  parameters = OrderedDict((parameter1, parameter2, parameter3))
 
   if request.method == 'POST' or id:
     print('Processing Switch Post/id request.')
