@@ -158,9 +158,9 @@ class RequestHandler(BaseHTTPRequestHandler):
       r_code = values[0].split('=')[1]
       g_code = values[1].split('=')[1]
       b_code = values[2].split('=')[1]
-      print(r_code)
-      print(g_code)
-      print(b_code)
+      print('R = %s' % str(r_code))
+      print('G = %s' % str(g_code))
+      print('B = %s' % str(b_code))
       RequestHandler.r_code = r_code
       RequestHandler.g_code = g_code
       RequestHandler.b_code = b_code
