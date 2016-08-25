@@ -209,11 +209,17 @@ def switch_wifidomo(id):
     last_used_b = wifidomo.last_used_b
     status = True
 
+  parameter1 = ('r', int(last_used_r))
+  parameter2 = ('g', int(last_used_g))
+  parameter3 = ('b', int(last_used_b))
+  parameters = OrderedDict([parameter1, parameter2, parameter3])
 
   if request.method == 'POST' or id:
     print('Processing Switch Post/id request.')
-    r = requests.post("http://" + targeturl + ":" + str(targetport), params={'r': last_used_r, 'g': last_used_g, 'b': last_used_b})
+    r = requests.post("http://" + targeturl + ":" + str(targetport), params=parameters)
     print(r.status_code, r.reason)
+    print('Parameters: %s' % parameters)
+    print('URL: %s' % str(r.url))
 
     if r.status_code == requests.codes.ok:
       wifidomo.status = status
