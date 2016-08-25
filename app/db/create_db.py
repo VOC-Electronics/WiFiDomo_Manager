@@ -78,6 +78,7 @@ class WiFiDomo(Base):
   locationid = Column(Integer, nullable=True)
   ip4 = Column(String(16), nullable=True)
   ip6 = Column(String, nullable=True)
+  port = Column(Integer, nullable=True, default=80)
   fqdn = Column(String, nullable=True)
   status = Column(Boolean, default=False)
   powerstatus = Column(Boolean, default=False)
@@ -92,13 +93,14 @@ class WiFiDomo(Base):
                     default=datetime.utcnow,
                     onupdate=datetime.utcnow)
 
-  def __init__(self, name, MAC, location_id, fqdn, status, ip4, ip6=0):
+  def __init__(self, name, MAC, location_id, fqdn, status, ip4, ip6=0, port=80):
     self.name = name
     self.MAC = MAC
     self.locationid = location_id
     self.fqdn = fqdn
     self.ip4 = ip4
     self.ip6 = ip6
+    self.port = port
     self.status = status
     self.powerstatus = False
     self.created = datetime.utcnow()
