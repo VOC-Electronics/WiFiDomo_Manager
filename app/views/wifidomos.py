@@ -157,7 +157,7 @@ def switch_preset(id):
       print('Processing switch_preset Post/id request.')
 
 
-  flash(u'Changing state of the wifidomo')
+  #flash(u'Changing state of the wifidomo')
 
   if request.method == 'GET':
     pass
