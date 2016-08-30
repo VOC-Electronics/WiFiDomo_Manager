@@ -22,13 +22,11 @@ RUN mkdir -p /opt/WiFiDomo
 COPY requirements.txt /opt/WiFiDomo/requirements.txt
 COPY . /opt/WiFiDomo/
 
-RUN pip install -r /opt/WiFiDomo/requirements.txt
-
 # Get pip to download and install requirements:
 RUN pip install -r /opt/WiFiDomo/requirements.txt
 
 # Expose ports
-EXPOSE 80 5000
+EXPOSE 5000 5000
 
 # Set the default directory where CMD will execute
 WORKDIR /opt/WiFiDomo/
