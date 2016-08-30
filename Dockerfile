@@ -2,6 +2,8 @@ FROM ubuntu
 
 MAINTAINER Martijn van Leeuwen (VOC) <info@voc-electronics.com>
 
+LABEL Description="WiFiDomo Manager"
+
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN echo "Updating system and installing python"
@@ -26,7 +28,7 @@ RUN pip install -r /opt/WiFiDomo/requirements.txt
 RUN pip install -r /my_application/requirements.txt
 
 # Expose ports
-EXPOSE 80
+EXPOSE 80 5000
 
 # Set the default directory where CMD will execute
 WORKDIR /opt/WiFiDomo/
