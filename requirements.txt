@@ -21,6 +21,7 @@ flask-restplus >= 0.9.2
 Flask-SQLAlchemy
 Flask-HTTPAuth >= 3.1.2
 Flask-HTTPS >= 0.1.0
+Flask-Login
 Creoleparser
 Genshi
 Jinja2
