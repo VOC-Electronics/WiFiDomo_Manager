@@ -13,14 +13,14 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc) main universe
 
 # Update the sources list
 RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get install -y tar git curl wget dialog build-essential python-cffi libssl-dev libffi-dev python-dev
-RUN apt-get install -y sed python python-dev python-distribute python-pip
-RUN pip install flask
+#RUN apt-get upgrade -y
+RUN apt-get install -y tar git curl wget dialog build-essential python-cffi libssl-dev libffi-dev python-dev sed python python-dev python-distribute python-pip python-setuptools
+RUN pip install -U setuptools
 
 RUN mkdir -p /opt/WiFiDomo
 
 COPY requirements.txt /opt/WiFiDomo/requirements.txt
+COPY . /opt/WiFiDomo/
 
 RUN pip install -r /opt/WiFiDomo/requirements.txt
 

@@ -1,0 +1,8 @@
+  *.md
+  .gitignore
+  .idea
+  .gitignore
+  Dockerfile
+  .DS_Store
+  *.pyc
+
