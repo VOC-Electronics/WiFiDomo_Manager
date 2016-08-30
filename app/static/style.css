@@ -7,16 +7,19 @@ a:hover         { color: #ff4b33; }
 a:hover         { color: #6D4100; }
 .box            { width: 1200px; margin: 40px auto; }
 .main           { width: 1200px; margin: 40px auto; }
+.overzicht      { font-size: 0.9em; margin: 5px 0 5px 0;}
 h2, h3, h4      { font-family: 'Garamond', 'Georgia', serif; font-weight: normal; }
 h1              { margin: 0 0 30px 0; background: url(/static/flask.png) no-repeat center;
                   height: 165px; }
 h1 span         { display: none; }
 h2              { font-size: 30px; margin: 15px 0 5px 0; color: #c6006f; }
 h3              { font-size: 24px; margin: 15px 0 5px 0; color: #c6006f; }
+.TitleHeader    { border-bottom: 2px solid gray; }
 h4              { font-size: 19px; margin: 15px 0 5px 0; color: #c6006f; }
 .ig             { color: #888; }
 .ig2            { color: #004B6B; }
 .code           { color: #004B6B; }
+.header         { border-bottom: 2px solid gray;}
 p               { line-height: 1.4; }
 .flash          { background: #cee5F5; padding: 0.5em; border: 1px solid #aacbe2; }
 .error          { background: #f0d6d6; padding: 0.5em; }
@@ -30,7 +33,7 @@ p               { line-height: 1.4; }
 .nav { width: 100%; margin: 0; padding: 1em; text-align: right; font-size: 0.8em; padding: 0.3em; margin-bottom: 1em; background: white; list-style-type: none;}
 .nav ul { list-style-type: none; padding: 0; }
 .nav ul a { text-decoration: none; }
-
+TitleHeader     { border-bottom: 2px solid gray; }
 /* Footer */
 .footer      { font-size: 13px; color: #004B6B; text-align: right; margin-top: 25px; }
 branding     { width: 1000px; }

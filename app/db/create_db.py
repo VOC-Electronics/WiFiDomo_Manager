@@ -78,10 +78,14 @@ class WiFiDomo(Base):
   locationid = Column(Integer, nullable=True)
   ip4 = Column(String(16), nullable=True)
   ip6 = Column(String, nullable=True)
+  port = Column(Integer, nullable=True, default=80)
   fqdn = Column(String, nullable=True)
   status = Column(Boolean, default=False)
   powerstatus = Column(Boolean, default=False)
-  last_used_rgb = Column(Integer, nullable=True)
+  last_used_r = Column(Integer)
+  last_used_g = Column(Integer)
+  last_used_b = Column(Integer)
+  last_used_preset = Column(Integer)
   created = Column(DateTime,
                    default=datetime.utcnow,
                    onupdate=datetime.utcnow)
@@ -89,17 +93,22 @@ class WiFiDomo(Base):
                     default=datetime.utcnow,
                     onupdate=datetime.utcnow)
 
-  def __init__(self, name, MAC, location_id, fqdn, status, ip4, ip6=0):
+  def __init__(self, name, MAC, location_id, fqdn, status, ip4, ip6=0, port=80):
     self.name = name
     self.MAC = MAC
     self.locationid = location_id
     self.fqdn = fqdn
     self.ip4 = ip4
     self.ip6 = ip6
+    self.port = port
     self.status = status
     self.powerstatus = False
     self.created = datetime.utcnow()
     self.updated_on = datetime.utcnow()
+    self.last_used_r = 0
+    self.last_used_b = 0
+    self.last_used_g = 0
+    self.last_used_preset = 0
 
 class WiFiNetworks(Base):
   __tablename__ = 'wifinetworks'
@@ -178,6 +187,12 @@ class Pattern(Base):
                     default=datetime.utcnow,
                     onupdate=datetime.utcnow)
 
+  def __init__(self, name):
+    self.name = name
+    self.created = datetime.utcnow()
+    self.updated_on = datetime.utcnow()
+
+
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.
 engine = create_engine('sqlite:///wifidomo.db',
@@ -196,9 +211,15 @@ loc2 = Locations('Livingroom', 2, 'Livingroom')
 loc3 = Locations('Kitchen', 3, 'Kitchen')
 #wd = WiFiDomo(name, MAC, location_id, fqdn, status, ip4, ip6=0)
 wd = WiFiDomo('wifidomo01', '', 2, 'wifidomo01', False, '')
+preset1 = Preset('Red', 0, 1023, 1023)
+preset2 = Preset('Green', 1023, 0, 1023)
+preset3 = Preset('Blue', 1023, 1023, 0)
 session.add(admin)
 session.add(loc1)
 session.add(loc2)
 session.add(loc3)
+session.add(preset1)
+session.add(preset2)
+session.add(preset3)
 session.add(wd)
 session.commit()

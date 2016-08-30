@@ -22,7 +22,7 @@ from flask import Blueprint, render_template, session, redirect, url_for, \
 from app.utils import requires_login, request_wants_json
 #from app.search import search as perform_search
 from app.wifidomo_manager import verify_password
-from app.database import db_session, WiFiDomo, Locations, Person
+from app.database import db_session, WiFiDomo, Locations, Person, Preset, Pattern
 
 mod = Blueprint('general', __name__,
                 static_folder='static',
@@ -35,6 +35,8 @@ def index():
   nr_wifidomo = WiFiDomo.query.count()
   nr_locations = Locations.query.count()
   nr_users = Person.query.count()
+  nr_presets = Preset.query.count()
+  nr_patterns = Pattern.query.count()
 
   #User.query.filter_by(openid=resp.identity_url).first()
   #overzicht = app.db.query.order_by(wifidomo.created.desc()).limit(1)
@@ -42,7 +44,9 @@ def index():
                          overzicht=overzicht,
                          nr_wifidomo=nr_wifidomo,
                          nr_locations=nr_locations,
-                         nr_users=nr_users)
+                         nr_users=nr_users,
+                         nr_presets=nr_presets,
+                         nr_patterns=nr_patterns)
 
 
 @mod.route('/login', methods=['GET', 'POST'])
@@ -74,5 +78,9 @@ def search():
         results = perform_search(q, page=page)
         if results is None:
             abort(404)
-    return render_template('general/search.html', results=results, q=q)
+    return render_template('search.html', results=results, q=q)
 
+
+@mod.route('/about')
+def about():
+  return render_template('about.html')

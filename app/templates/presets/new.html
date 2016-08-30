@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block head %}
+  {{ super() }}
+  <style type=text/css>
+    h1 { margin: 0 0 10px 0; background: url({{ url_for('static', filename='voc/logo_wifidomo.png') }}) no-repeat center; width 880px;height: 200px; }
+    h1 span, p.tagline { display: none;
+  </style>
+  <script type=text/javascript>
+    $(function() {
+      $('h1').bind('mousedown contextmenu', function(event) {
+        if (event.button != 2)
+          return;
+        var box = $('div.logohint');
+        if (!box.is(':visible'))
+          box.animate({'height': 'show', 'opacity': 'show'}, 100);
+        event.preventDefault();
+        event.returnValue = false;
+        return false;
+      });
+    });
+  </script>
+{% endblock %}
+{% block body %}
+  <body onload="zoom()">
+  <p>
+  <h2>Add a new preset</h2>
+  </p>
+  <p>
+  <form action="" method=post>
+    <dl class=formlist>
+      <table>
+        <tr>
+          <td>Name:</td>
+          <td><input type=text name=name value="{{ request.form.name }}" size=40></td>
+        </tr>
+        <tr>
+          <td>Red Code:</td>
+          <td><input type=int name=r_code value="{{ request.form.r_code }}" size=10></td>
+        </tr>
+        <tr>
+          <td>Green Code:</td>
+          <td><input type=int name=g_code value="{{ request.form.g_code }}" size=10></td>
+        </tr>
+        <tr>
+          <td>Blue Code:</td>
+          <td><input type=int name=b_code value="{{ request.form.b_code }}" size=10></td>
+        </tr>
+      </table>
+    </dl>
+    <p>
+      <input type=submit name=submit value=Submit>
+      <input type=submit name=cancel value=Cancel>
+  </form>
+{% endblock %}

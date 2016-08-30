@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-
 {% block head %}
   {{ super() }}
   <style type=text/css>
@@ -21,13 +20,13 @@
     });
   </script>
 {% endblock %}
-
 {% block body %}
   <body onload="zoom()">
+  {% if nav.subtopPatterns %}
   <p class=nav>
   <div class=metanav>
     <li>
-    {% for item in nav.subtopWD %}
+    {% for item in nav.subtopPatterns %}
     <lu class="{{ 'active' if item.is_active else '' }}">
         <a href="{{ item.url }}">{{ item.label }}</a>
     </lu>
@@ -35,9 +34,12 @@
     </li>
   </div>
   </p>
-  <h3 class=TitleHeader>Current WiFiDomos : {% if nr_wifidomo %} ( {{ nr_wifidomo }} ) {% endif %}</h3><br>
-  {% if nr_wifidomo > 0 %}
-  <p>Wifidomos:</p>
+  {% endif %}
+  <p>
+    <h3 class=TitleHeader>Current available Patterns : {% if nr_patterns %} ( {{ nr_patterns }} ) {% else %} ( None! ) {% endif %}</h3><br>
+  </p>
+  {% if nr_patterns > 0 %}
+  <p>Patterns:</p>
   <table>
     <tr>
       <th>Name:</th>
@@ -46,7 +48,6 @@
       <th>MAC:</th>
       <th>IP4:</th>
       <th>switch on/off</th>
-      <th>Available Preset</th>
     </tr>
     {% for wifidomo in wifidomo_list %}
     <tr>
@@ -55,23 +56,13 @@
       <td> {% if wifidomo.status %} Active {% else %} Inactive {% endif %}</td>
       <td> {{ wifidomo.MAC }} </td>
       <td> {{ wifidomo.ip4 }} </td>
-      <td> {% if not wifidomo.status %} Use presets {% else %}<a href = "{{ url_for('wifidomos.switch_wifidomo', __METHOD_OVERRIDE__='POST', id=wifidomo.id ) }}">Off</a>{% endif %}</td>
-      <td>
-        <form action="{{ url_for('wifidomos.switch_preset', id=wifidomo.id) }}" method=post>
-        <select name=preset>
-          <option selected value="0">None</option>
-          {% for entry in wifidomo_presets %}<option
-            value={{ entry.id }}>{{ entry.name }}</option>{% endfor %}
-        </select>
-        <input type=submit name=activate value="Activate preset">
-        </form>
-      </td>
+      <td> {% if wifidomo.powerstatus %} Off {% else %} On {% endif %}</td>
     </tr>
     {% endfor %}
   </table>
   {% else %}
-   <ul>
-    <li>Bla bla</li>
-  </ul>
+  <p>
+    No patterns found.
+  </p>
   {% endif %}
 {% endblock %}

@@ -1,8 +1,7 @@
 {% extends "layout.html" %}
-
 {% block head %}
   {{ super() }}
-   <style type=text/css>
+  <style type=text/css>
     h1 { margin: 0 0 10px 0; background: url({{ url_for('static', filename='voc/logo_wifidomo.png') }}) no-repeat center; width 880px;height: 200px; }
     h1 span, p.tagline { display: none;
   </style>
@@ -21,33 +20,33 @@
     });
   </script>
 {% endblock %}
-{% block title %}WiFiDomo Locations{% endblock %}
 {% block body %}
-  <small>Please fill in all details.</small>
+  <body onload="zoom()">
+  <p>
+  <h2>Edit Preset:</h2>
+  </p>
+  <p>
   <form action="" method=post>
-  <table border="0">
-    <caption>Location information</caption>
-    <tbody>
-    <tr>
-      <td>
-        <table border="0" align="top">
-          <tr align="top">
-          <td><a>Name:<a/></td>
+    <dl class=formlist>
+      <table>
+        <tr>
+          <td>Name:</td>
           <td><input type=text name=name value="{{ form.name }}" size=40></td>
-          </tr>
-          <tr>
-          <td>Location code:</td>
-          <td><input type=text name=location_code value="{{ form.location_code }}" size=40></td>
-          </tr>
-          <tr>
-          <td>Description:</td>
-          <td width="80%"><textarea name=body cols=40 rows=8>{{ form.body }}</textarea></td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+        </tr>
+        <tr>
+          <td>Red Code:</td>
+          <td><input type=int name=r_code value="{{ form.r_code }}" size=10></td>
+        </tr>
+        <tr>
+          <td>Green Code:</td>
+          <td><input type=int name=g_code value="{{ form.g_code }}" size=10></td>
+        </tr>
+        <tr>
+          <td>Blue Code:</td>
+          <td><input type=int name=b_code value="{{ form.b_code }}" size=10></td>
+        </tr>
+      </table>
+    </dl>
     <p>
       <input type=submit name=submit value=Submit>
       <input type=submit name=delete value=Delete>

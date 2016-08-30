@@ -20,9 +20,7 @@
     });
   </script>
 {% endblock %}
-
 {% block title %}New WiFiDomo{% endblock %}
-
 {% block body %}
   <body onload="zoom()">
   <p>
@@ -54,6 +52,10 @@
           <td>IP (v6):</td>
           <td><input type=text name=ip6 value="{{ request.form.ip6 }}" size=40></td>
           <td>(Leave blank if unknown)</td>
+        </tr>
+        <tr>
+          <td>Port:</td>
+          <td><input type=text name=port value="{{ request.form.port }}" size=10></td>
         </tr>
         <tr>
           <td>Status:</td>
