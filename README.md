@@ -12,10 +12,19 @@ Een flask based interface for the WiFiDomo product line.
 
 
 ### Database:
+* Currently we only use SQLite3 local database.
+* Future release(s) might include the use of Postgress and/or MySQL/MariaDB/etc.
+
+
+## Docker
+* We now have a Dockerfile in the repo to launch the WifiDomo manager in your own
+  Docker Container.
+  
 
 ### Branches
 * origin/master - Master Branch
 * origin/development - development branch
+
 
 ## Whishlist:
 
@@ -27,10 +36,12 @@ Een flask based interface for the WiFiDomo product line.
 * libssl-dev
 * libffi
 
+
 possibly, if xml is needed:<br>
 * libxslt1-dev
 * libxml2
 * libxml2-dev
+
 
 ## DISCLAIMER
 
@@ -43,6 +54,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ## Version History
+
 * 0.1 - Pre-Alpha (Only add/delete/modify wifidomos and locations work.)
 * 0.0 - Initial code
 

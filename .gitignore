@@ -7,13 +7,9 @@ env
 dist
 _mailinglist/
 *.egg-info
-scratch.filee
+scratch.file
 .idea/
-temp/
-test.py
-api
-test1.py
-test2.py
-test3.py
-app/templates/user/
 *.old
+modules/app.py
+etc/kapot.ini
+api/
