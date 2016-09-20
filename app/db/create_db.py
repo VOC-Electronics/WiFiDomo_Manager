@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright (C) 2016, V.O.C. van Leeuwen
 
 __author__ = 'Martijn van Leeuwen'
 __email__ = 'info@voc-electronics.com'
@@ -176,6 +175,7 @@ class Preset(Base):
     self.b_code = b_code
     self.created = datetime.utcnow()
 
+
 class Pattern(Base):
   __tablename__ = 'pattern'
   id = Column(Integer, primary_key=True)
@@ -191,6 +191,40 @@ class Pattern(Base):
     self.name = name
     self.created = datetime.utcnow()
     self.updated_on = datetime.utcnow()
+
+
+class Schedules(Base):
+  __tablename__ = 'schedule'
+  id = Column(Integer, primary_key = True)
+  name = Column(String, nullable = False)
+  crondata = Column(String, nullable=True)
+  action_date = Column(DateTime, nullable=True)
+  action_time = Column(DateTime, nullable=True)
+  stop_time = Column(DateTime, nullable=True)
+  stop_date = Column(DateTime, nullable=True)
+  start_hr = Column(Integer, nullable=True)
+  start_min = Column(Integer, nullable=True)
+  stop_hr = Column(Integer, nullable=True)
+  stop_min = Column(Integer, nullable=True)
+  action = Column(Integer, nullable=True)
+  r_code = Column(Integer, nullable=True)
+  g_code = Column(Integer, nullable=True)
+  b_code = Column(Integer, nullable=True)
+  active = Column(Boolean, nullable=False, default=False)
+  action_preset = Column(Integer, nullable=True)
+  created = Column(DateTime,
+                 default=datetime.utcnow,
+                 onupdate=datetime.utcnow)
+  updated_on = Column(DateTime,
+                    default=datetime.utcnow,
+                    onupdate=datetime.utcnow)
+
+  def __init__(self, name):
+    self.name = name
+    self.active = False
+    self.created = datetime.utcnow()
+    self.updated_on = datetime.utcnow()
+
 
 
 # Create an engine that stores data in the local directory's
@@ -214,6 +248,9 @@ wd = WiFiDomo('wifidomo01', '', 2, 'wifidomo01', False, '')
 preset1 = Preset('Red', 0, 1023, 1023)
 preset2 = Preset('Green', 1023, 0, 1023)
 preset3 = Preset('Blue', 1023, 1023, 0)
+preset4 = Preset('Orange', 0, 950, 1023)
+preset5 = Preset('Test', 128, 241, 95)
+preset6 = Preset('Test2', 851, 423, 699)
 session.add(admin)
 session.add(loc1)
 session.add(loc2)
@@ -221,5 +258,8 @@ session.add(loc3)
 session.add(preset1)
 session.add(preset2)
 session.add(preset3)
+session.add(preset4)
+session.add(preset5)
+session.add(preset6)
 session.add(wd)
 session.commit()
