@@ -212,6 +212,7 @@ class Schedules(Base):
   b_code = Column(Integer, nullable=True)
   active = Column(Boolean, nullable=False, default=False)
   action_preset = Column(Integer, nullable=True)
+  target_wifidomo = Column(Integer, nullable=True)
   created = Column(DateTime,
                  default=datetime.utcnow,
                  onupdate=datetime.utcnow)
