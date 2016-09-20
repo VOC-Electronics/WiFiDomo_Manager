@@ -13,3 +13,6 @@ scratch.file
 modules/app.py
 etc/kapot.ini
 api/
+app/db/wifidomo.db
+app/db/wifidomo.db.old
+app/db/wifidomo.db.bak
