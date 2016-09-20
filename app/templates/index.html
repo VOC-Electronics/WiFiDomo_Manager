@@ -35,7 +35,7 @@
       <li>Number of Locations: {{ nr_locations }}</li>
       <li>Number of Users: {{ nr_users }}</li>
       <li>Number of Presets: {{ nr_presets }}</li>
-      <li>Number of Patterns: {{ nr_patterns }}</li>
+      <li>{% if nr_schedules > 0 %}Number of Schedules: {{ nr_schedules }} {% else %}Number of schedules: None!{% endif %}</li>
     </ul>
   </span>
 {% endblock %}

@@ -33,6 +33,7 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
   jsonify, abort, abort, request, Markup
 from app.database import Preset, db_session, Schedules
 from app.wifidomo_manager import app, db, nav
+from app.views.general import get_wifidomo_list, get_preset_list
 
 TIMEDELTA_UNITS = (
     ('year',   3600 * 24 * 365),
@@ -43,6 +44,12 @@ TIMEDELTA_UNITS = (
     ('minute', 60),
     ('second', 1)
 )
+
+
+# Sub-Website navigation:
+nav.Bar('subtopSchedules', [
+  nav.Item('New Schedule', 'schedule.add_schedule')
+])
 
 empty_cron = CronTab()
 
@@ -80,7 +87,9 @@ mod = Blueprint('schedule', __name__,
 
 @mod.route('/')
 def index():
-  #nr_active_schedules = Schedules.query.where(active=true)
+  #Model.query.filter(Model.columnName.contains('sub_string'))
+  #UserImage.query.filter(UserImage.user_id == 1).count()
+  nr_active_schedules = Schedules.query.filter(Schedules.active == True).count()
   nr_schedules = Schedules.query.count()
   schedules = Schedules.query.all()
   return render_template('schedule/index.html',
@@ -94,3 +103,48 @@ def edit_schedule(id):
   data = Schedule.query.get(id)
   if data is None:
     abort(404)
+
+
+@mod.route('/add/', methods=['GET', 'POST'])
+#@requires_login
+def add_schedule():
+  if request.method == 'POST':
+    if 'cancel' in request.form:
+      return redirect(url_for('schedule.index'))
+
+    if app.debug:
+      print('Processing POST call.')
+
+    schedule_name = request.form.get('name', type=str)
+    schedule_wifidomo = request.form['target_wifidomo']
+    schedule_preset = request.form['target_preset']
+    schedule_starthr = request.form.get('start_hr', type=int)
+    schedule_startmin = request.form.get('start_min', type=int)
+    schedule_stophr = request.form.get('stop_hr', type=int)
+    schedule_stopmin = request.form.get('stop_min', type=int)
+
+    if app.debug:
+      print('-[DEBUG]-')
+      print("Submited data:")
+      print('Name: %s' % schedule_name)
+      print('WiFiDomo: %s' % str(schedule_wifidomo))
+      print('Preset: %s' % schedule_preset)
+      print('Start_HR: %s' % str(schedule_starthr))
+      print('Start_Min: %s' % str(schedule_startmin))
+      print('Stop_HR: %s' % str(schedule_stophr))
+      print('Stop_Min: %s' % str(schedule_stopmin))
+
+    #wifidomo = WiFiDomo(name, mac, location_id, fqdn, status, ip4, ip6, port)
+    #db_session.add(wifidomo)
+    #db_session.commit()
+    flash(u'Your Schedule was added')
+    return redirect(url_for('schedule.index'))
+
+  if request.method == 'GET':
+    preset_list = get_preset_list()
+    wifidomo_list = get_wifidomo_list()
+    if app.debug:
+      print('Processing GET call.')
+    return render_template('schedule/new.html',
+                           preset_list = preset_list,
+                           wifidomo_list = wifidomo_list)

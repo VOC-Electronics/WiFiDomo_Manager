@@ -21,12 +21,76 @@ from flask import Blueprint, render_template, session, redirect, url_for, \
   request, flash, g, jsonify, abort
 from app.utils import requires_login, request_wants_json
 #from app.search import search as perform_search
-from app.wifidomo_manager import verify_password
-from app.database import db_session, WiFiDomo, Locations, Person, Preset, Pattern
+from app.wifidomo_manager import verify_password, app
+from app.database import db_session, WiFiDomo, Locations, Person, Preset, Schedules
 
 mod = Blueprint('general', __name__,
                 static_folder='static',
                 template_folder='templates')
+
+'''
+# ==============================================================================
+# Global Functions
+# ==============================================================================
+'''
+
+def get_preset_list():
+  tempList = []
+  presets = Preset.query.order_by(Preset.id)
+  for preset in presets:
+    TempList2 = []
+    TempList2Item = ('preset_id', int(preset.id))
+    TempList2Item2 = ('preset_name', str(preset.name))
+    TempList2.append(TempList2Item)
+    TempList2.append(TempList2Item2)
+    zippedtempdict = dict(TempList2)
+    tempList.append(zippedtempdict)
+    if app.debug:
+      print('Appended to list: %s' % zippedtempdict)
+  if app.debug:
+    print('tempList value:')
+    print(tempList)
+  return tempList
+
+
+def get_wifidomo_list():
+  tempList = []
+  wifidomos = WiFiDomo.query.order_by(WiFiDomo.id)
+  for wifidomo in wifidomos:
+    TempList2 = [ ]
+    TempList2Item = ('wifidomo_id', int(wifidomo.id))
+    TempList2Item2 = ('wifidomo_name', str(wifidomo.name))
+    TempList2.append(TempList2Item)
+    TempList2.append(TempList2Item2)
+    zippedtempdict = dict(TempList2)
+    tempList.append(zippedtempdict)
+    if app.debug:
+      print('Appended to list: %s' % zippedtempdict)
+  if app.debug:
+    print('tempList value:')
+    print(tempList)
+  return tempList
+
+
+def get_location_list():
+  tempList = []
+  locations = Locations.query.order_by(Locations.id)
+  for location in locations:
+    NewList3 = []
+    newList = ('location_id', int(location.id))
+    newList2 = ('location_name', str(location.location_name))
+    NewList3.append(newList)
+    NewList3.append(newList2)
+    zippedlistdictionary = dict(NewList3)
+    tempList.append(zippedlistdictionary)
+    if app.debug:
+      print('Appended to list: %s' % zippedlistdictionary)
+  if app.debug:
+    print('tempList value:')
+    print(tempList)
+  return tempList
+
+
 
 @mod.route('/')
 def index():
@@ -36,7 +100,7 @@ def index():
   nr_locations = Locations.query.count()
   nr_users = Person.query.count()
   nr_presets = Preset.query.count()
-  nr_patterns = Pattern.query.count()
+  nr_schedules = Schedules.query.count()
 
   #User.query.filter_by(openid=resp.identity_url).first()
   #overzicht = app.db.query.order_by(wifidomo.created.desc()).limit(1)
@@ -46,7 +110,7 @@ def index():
                          nr_locations=nr_locations,
                          nr_users=nr_users,
                          nr_presets=nr_presets,
-                         nr_patterns=nr_patterns)
+                         nr_schedules = nr_schedules)
 
 
 @mod.route('/login', methods=['GET', 'POST'])

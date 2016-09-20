@@ -20,8 +20,9 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
 from app.utils import requires_login, request_wants_json
 from app.wifidomo_manager import verify_password
 from app.wifidomo_manager import nav, app
+from app.views.general import get_location_list
 from collections import OrderedDict
-from app.database import WiFiDomo, Locations, db_session, Preset
+from app.database import WiFiDomo, Locations, db_session, Preset, Schedules
 import requests
 from collections import OrderedDict
 import subprocess
@@ -64,7 +65,7 @@ def send_wifidomo_call(ip, action):
   return result
 
 
-def get_location_list():
+def get_location_list2():
   tempList = []
   locations = Locations.query.order_by(Locations.id)
   for location in locations:
@@ -88,12 +89,14 @@ def index():
   nr_wifidomo = WiFiDomo.query.count()
   wifidomos = WiFiDomo.query.all()
   locations = Locations.query.all()
+  nr_schedules = Schedules.query.count()
   presets = Preset.query.all()
   return render_template('wifidomos/index.html',
                          nr_wifidomo = nr_wifidomo,
                          wifidomo_list = wifidomos,
                          locations_list = locations,
-                         wifidomo_presets = presets)
+                         wifidomo_presets = presets,
+                         nr_schedules = nr_schedules)
 
 
 @mod.route('/overview', methods=['GET'])

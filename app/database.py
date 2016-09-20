@@ -225,3 +225,43 @@ class Pattern(Base):
 
   def __init__(self, name):
     self.name = name
+
+
+#ToDo: Build full Schedules table and routines.
+class Schedules(Base):
+  __tablename__ = 'schedule'
+  id = Column(Integer, primary_key = True)
+  name = Column(String, nullable = False)
+  crondata = Column(String, nullable=True)
+  action_date = Column(DateTime, nullable=True)
+  action_time = Column(DateTime, nullable=True)
+  stop_time = Column(DateTime, nullable=True)
+  stop_date = Column(DateTime, nullable=True)
+  start_hr = Column(Integer, nullable=True)
+  start_min = Column(Integer, nullable=True)
+  stop_hr = Column(Integer, nullable=True)
+  stop_min = Column(Integer, nullable=True)
+  action = Column(Integer, nullable=True)
+  r_code = Column(Integer, nullable=True)
+  g_code = Column(Integer, nullable=True)
+  b_code = Column(Integer, nullable=True)
+  active = Column(Boolean, nullable=False, default=False)
+  action_preset = Column(Integer, nullable=True)
+  created = Column(DateTime,
+                 default=datetime.utcnow,
+                 onupdate=datetime.utcnow)
+  updated_on = Column(DateTime,
+                    default=datetime.utcnow,
+                    onupdate=datetime.utcnow)
+
+  def __init__(self, name):
+    self.name = name
+    self.active = False
+    self.created = datetime.utcnow()
+    self.updated_on = datetime.utcnow()
+
+  def __repr__(self):
+    return '<Schedule %s>' % (self.name)
+
+  def to_json(self):
+    return dict(name=self.name)

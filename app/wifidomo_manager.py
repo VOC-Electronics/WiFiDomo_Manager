@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright (C) 2016, V.O.C. van Leeuwen
 
 __author__ = 'Martijn van Leeuwen'
 __email__ = 'info@voc-electronics.com'
@@ -29,14 +28,16 @@ __email__ = 'info@voc-electronics.com'
 # ==============================================================================
 '''
 import os
+
 from datetime import datetime
-from flask import Flask, render_template, url_for, request, g, flash, redirect, jsonify, session
-from flask_navigation import Navigation
+from flask import Flask, render_template, redirect
 from flask_httpauth import HTTPBasicAuth
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.contrib.fixers import ProxyFix
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_navigation import Navigation
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.contrib.fixers import ProxyFix
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 '''
 # ==============================================================================
@@ -74,7 +75,7 @@ nav.Bar('top', [
   nav.Item('WiFiDomo', 'wifidomos.index'),
   nav.Item('Locations', 'locations.index'),
   nav.Item('Presets', 'presets.index'),
-#  nav.Item('Patterns', 'patterns.index'),
+  nav.Item('Schedules', 'schedule.index'),
 #  nav.Item('Overview', 'general.index'),
   nav.Item('About', 'general.about')
 ])
@@ -92,6 +93,7 @@ nav.Bar('top', [
 def load_user(user_id):
     return User.get(user_id)
 
+
 @app.errorhandler(404)
 def not_found(error):
   return render_template('404.html'), 404
@@ -108,9 +110,11 @@ def verify_password(username, password):
 def current_year():
     return {'current_year': datetime.utcnow().year}
 
+
 @app.teardown_request
 def remove_db_session(exception):
     db_session.remove()
+
 
 @app.route("/logout")
 #@login_required
@@ -129,6 +133,7 @@ from app.views import wifidomos
 from app.views import locations
 from app.views import patterns
 from app.views import presets
+from app.views import schedule
 
 if app.debug:
   print('Regisering blueprint: General')
@@ -158,10 +163,16 @@ app.register_blueprint(presets.mod,
                        url_prefix='/presets',
                        template_folder='templates/presets')
 
+if app.debug:
+  print('Registering blueprint: Scheduling')
+  app.register_blueprint(schedule.mod,
+                         url_prefix='/schedule',
+                         template_folder='templates/schedule')
+
 print('Using database: %s' % str(app.config['DB_FILE']))
 
 # ToDo Enable the use of a local or remote database
-from app.database import Person, WiFiDomo, WiFiNetworks, Locations, Loginlog, Preset, Pattern, Person, db_session # When they are in use.
+from app.database import db_session # When they are in use.
 from app import utils
 
 app.jinja_env.filters['datetimeformat'] = utils.format_datetime
