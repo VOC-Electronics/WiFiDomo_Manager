@@ -134,9 +134,9 @@ def add_schedule():
       print('Stop_HR: %s' % str(schedule_stophr))
       print('Stop_Min: %s' % str(schedule_stopmin))
 
-    #wifidomo = WiFiDomo(name, mac, location_id, fqdn, status, ip4, ip6, port)
-    #db_session.add(wifidomo)
-    #db_session.commit()
+    new_schedule = Schedules(schedule_name, schedule_wifidomo, schedule_preset, schedule_starthr, schedule_startmin, schedule_stophr, schedule_stopmin)
+    db_session.add(new_schedule)
+    db_session.commit()
     flash(u'Your Schedule was added')
     return redirect(url_for('schedule.index'))
 
