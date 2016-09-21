@@ -110,10 +110,20 @@ def edit_schedule(id):
   if request.method == 'POST':
     if 'cancel' in request.form:
       return redirect(url_for('schedule.index'))
-    if 'delete' in request.form:
+    elif 'delete' in request.form:
       db_session.delete(data)
       db_session.commit()
       flash(u'Deleting Schedule: %s' % data.name)
+      return redirect(url_for('schedule.index'))
+    elif 'activate' in request.form:
+      data.active = True
+      db_session.commit()
+      flash(u'Activating Schedule: %s' % data.name)
+      return redirect(url_for('schedule.index'))
+    elif 'deactivate' in request.form:
+      data.active = False
+      db_session.commit()
+      flash(u'Deactivating Schedule: %s' % data.name)
       return redirect(url_for('schedule.index'))
     elif 'submit' in request.form:
       data.name = request.form.get('name', type=str)
@@ -138,7 +148,8 @@ def edit_schedule(id):
                 start_hr = data.start_hr,
                 start_min = data.start_min,
                 stop_hr = data.stop_hr,
-                stop_min = data.stop_min)
+                stop_min = data.stop_min,
+                active = data.active)
 
     if app.debug:
       print('Populating form:')

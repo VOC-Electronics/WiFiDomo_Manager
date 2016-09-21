@@ -71,11 +71,20 @@
           <td>Stop minute:</td>
           <td><input type=int name=stop_min value="{{ form.stop_min }}" size=10></td>
         </tr>
+        {% if form.active %}
+        <tr>
+          <td>Schedule is <strong>active</strong>.</td>
+        </tr>
+        {% endif %}
       </table>
     </dl>
     <p>
       <input type=submit name=submit value=Submit>
-      <input type=submit name=delete value=Delete>
       <input type=submit name=cancel value=Cancel>
+      <br>
+      <input type=submit name=delete value=Delete>
+      <br>
+      <input type=submit name=activate value=Activate>
+      <input type=submit name=deactivate value=Deactivate>
   </form>
 {% endblock %}
