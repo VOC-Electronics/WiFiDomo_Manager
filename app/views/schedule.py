@@ -91,7 +91,7 @@ def index():
   #UserImage.query.filter(UserImage.user_id == 1).count()
   nr_active_schedules = Schedules.query.filter(Schedules.active == True).count()
   nr_schedules = Schedules.query.count()
-  schedules = Schedules.query.all()
+  schedules = Schedules.query.limit(5).all()
   return render_template('schedule/index.html',
                          nr_active_schedules = nr_active_schedules,
                          nr_schedules = nr_schedules,
@@ -100,9 +100,14 @@ def index():
 @mod.route('/edit/<int:id>,', methods=['GET', 'POST'])
 def edit_schedule(id):
   error = None
-  data = Schedule.query.get(id)
-  if data is None:
+  if not id:
     abort(404)
+  else:
+    data = Schedule.query.get(id)
+    if data is None:
+      abort(404)
+
+
 
 
 @mod.route('/add/', methods=['GET', 'POST'])
