@@ -102,11 +102,60 @@ def edit_schedule(id):
   error = None
   if not id:
     abort(404)
-  else:
-    data = Schedule.query.get(id)
-    if data is None:
-      abort(404)
 
+  data = Schedules.query.get(id)
+  if data is None:
+    abort(404)
+
+  if request.method == 'POST':
+    if 'cancel' in request.form:
+      return redirect(url_for('schedule.index'))
+    if 'delete' in request.form:
+      db_session.delete(data)
+      db_session.commit()
+      flash(u'Deleting Schedule: %s' % data.name)
+      return redirect(url_for('schedule.index'))
+    elif 'submit' in request.form:
+      data.name = request.form.get('name', type=str)
+      data.target_wifidomo = request.form.get('target_wifidomo', type=int)
+      data.action_preset = request.form.get('action_preset', type=int)
+      data.start_hr = request.form.get('start_hr', type=int)
+      data.start_min = request.form.get('start_min', type=int)
+      data.stop_hr = request.form.get('stop_hr', type=int)
+      data.stop_min = request.form.get('stop_min', type=int)
+
+      db_session.commit()
+      flash(u'Saving modifications for %s' % data.name)
+      return redirect(url_for('schedule.index'))
+    else:
+      flash(u'Nothing changed')
+      return redirect(url_for('schedule.index'))
+
+  if request.method == 'GET':
+    form = dict(name=data.name,
+                target_wifidomo = data.target_wifidomo,
+                action_preset = data.action_preset,
+                start_hr = data.start_hr,
+                start_min = data.start_min,
+                stop_hr = data.stop_hr,
+                stop_min = data.stop_min)
+
+    if app.debug:
+      print('Populating form:')
+      print(data.name)
+      print(data.target_wifidomo)
+      print(data.action_preset)
+      print(data.start_hr)
+      print(data.start_min)
+      print(data.stop_hr)
+      print(data.stop_min)
+
+    preset_list = get_preset_list()
+    wifidomo_list = get_wifidomo_list()
+    return render_template('schedule/edit.html',
+                           preset_list=preset_list,
+                           wifidomo_list=wifidomo_list,
+                           form = form)
 
 
 

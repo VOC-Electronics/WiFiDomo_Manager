@@ -31,14 +31,14 @@
       <table>
         <tr>
           <td>Name:</td>
-          <td><input type=text name=name value="{{ request.form.name }}" size=40></td>
+          <td><input type=text name=name value="{{ form.name }}" size=40></td>
         </tr>
         <tr>
           <td>Select target WiFiDomo::</td>
           <td>
             <select name=target_wifidomo>
             {% for entry in wifidomo_list %}
-              <option {% if entry['wifidomo_id'] == wifidomo_list.wifidomo_id %} selected {% endif %}
+              <option {% if entry['wifidomo_id'] == form.target_wifidomo %} selected {% endif %}
                   value={{ entry['wifidomo_id'] }}>{{ entry['wifidomo_name'] }}</option>
             {% endfor %}
             </select>
@@ -47,9 +47,9 @@
         <tr>
           <td>Select required Preset:</td>
           <td>
-            <select name=target_preset>
+            <select name=action_preset>
             {% for entry in preset_list %}
-              <option {% if entry['preset_id'] == preset_list.preset_id %} selected {% endif %}
+              <option {% if entry['preset_id'] == form.action_preset %} selected {% endif %}
                   value={{ entry['preset_id'] }}>{{ entry['preset_name'] }}</option>
             {% endfor %}
             </select>
@@ -57,19 +57,19 @@
         </tr>
         <tr>
           <td>Start hour:</td>
-          <td><input type=int name=start_hr value="{{ request.form.start_hr }}" size=10></td>
+          <td><input type=int name=start_hr value="{{ form.start_hr }}" size=10></td>
         </tr>
         <tr>
           <td>Start minute:</td>
-          <td><input type=int name=start_min value="{{ request.form.start_min }}" size=10></td>
+          <td><input type=int name=start_min value="{{ form.start_min }}" size=10></td>
         </tr>
         <tr>
           <td>Stop hour:</td>
-          <td><input type=int name=stop_hr value="{{ request.form.stop_hr }}" size=10></td>
+          <td><input type=int name=stop_hr value="{{ form.stop_hr }}" size=10></td>
         </tr>
         <tr>
           <td>Stop minute:</td>
-          <td><input type=int name=stop_min value="{{ request.form.stop_min }}" size=10></td>
+          <td><input type=int name=stop_min value="{{ form.stop_min }}" size=10></td>
         </tr>
       </table>
     </dl>
