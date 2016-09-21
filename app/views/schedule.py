@@ -51,7 +51,7 @@ nav.Bar('subtopSchedules', [
   nav.Item('New Schedule', 'schedule.add_schedule')
 ])
 
-empty_cron = CronTab()
+#empty_cron = CronTab()
 
 
 def format_datetime(dt):
@@ -92,10 +92,14 @@ def index():
   nr_active_schedules = Schedules.query.filter(Schedules.active == True).count()
   nr_schedules = Schedules.query.count()
   schedules = Schedules.query.limit(5).all()
+  preset_list = get_preset_list()
+  wifidomo_list = get_wifidomo_list()
   return render_template('schedule/index.html',
                          nr_active_schedules = nr_active_schedules,
                          nr_schedules = nr_schedules,
-                         schedules = schedules)
+                         schedules = schedules,
+                         preset_list=preset_list,
+                         wifidomo_list=wifidomo_list)
 
 @mod.route('/edit/<int:id>,', methods=['GET', 'POST'])
 def edit_schedule(id):
