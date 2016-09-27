@@ -53,6 +53,7 @@
       <th>Preset:</th>
       <th>WiFiDomo:</th>
       <th>Other:</th>
+      <th>Active:</th>
     </tr>
     {% for schedule in schedules %}
     <tr>
@@ -60,6 +61,7 @@
       <td> {{ schedule.action_preset }} </td>
       <td> {{ schedule.target_wifidomo }} </td>
       <td> {{ schedule.target_wifidomo }} </td>
+      <td> {{ schedule.active }} </td>
     </tr>
     {% endfor %}
     </table> {% endif %}
