@@ -99,7 +99,6 @@ def request_wants_json():
     return best == 'application/json' and \
        request.accept_mimetypes[best] > request.accept_mimetypes['text/html']
 
-#ToDo: Fix the routine, it keeps crashing the app.
 def requires_login(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -109,7 +108,6 @@ def requires_login(f):
         return f(*args, **kwargs)
     return decorated_function
 
-#ToDo: Fix the routine, it keeps crashing the app.
 def requires_admin(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):

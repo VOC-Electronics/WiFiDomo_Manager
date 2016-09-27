@@ -102,7 +102,6 @@ def index():
 @mod.route('/overview', methods=['GET'])
 #@requires_login
 def overview():
-  # ToDo: Select available WifiDomo's from the database and parse them into the template.
   nr_wifidomo = WiFiDomo.query.count()
   flash(u'Not much available now, maybe in a future release')
   return render_template('wifidomos/index.html',
@@ -310,7 +309,6 @@ def add_wifidomo():
       flash(u'Your wifidomo was added')
       return redirect(url_for('wifidomos.index'))
 
-    #ToDo: Cleanup the lowerpart of the code as we now have a working database creation script with test data
     tempList = get_location_list()
     return render_template('wifidomos/new.html',
                            wifidomo_locations=tempList)

@@ -169,7 +169,8 @@ if app.debug:
                          url_prefix='/schedule',
                          template_folder='templates/schedule')
 
-print('Using database: %s' % str(app.config['DB_FILE']))
+if app.debug:
+  print('Using database: %s' % str(app.config['DB_FILE']))
 
 # ToDo Enable the use of a local or remote database
 from app.database import db_session # When they are in use.

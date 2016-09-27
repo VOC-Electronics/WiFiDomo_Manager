@@ -34,7 +34,7 @@ nav.Bar('subtop', [
   nav.Item('Overview', 'locations.overview')
 ])
 
-#ToDo Rethink if we shoud need an index.
+
 @mod.route('/', methods=['GET'])
 def index():
   overzicht = Locations.query.all()
@@ -42,6 +42,7 @@ def index():
   return render_template('locations/location.html',
                          location_list = overzicht,
                          location_count = number)
+
 
 @mod.route('/add_location/', methods=['GET', 'POST'])
 #@requires_login
