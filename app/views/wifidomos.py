@@ -133,11 +133,15 @@ def switch_preset(id):
     g_code = preset_data.g_code
     b_code = preset_data.b_code
 
-
+    templist = []
     parameter1 = ('r', int(r_code))
     parameter2 = ('g', int(g_code))
     parameter3 = ('b', int(b_code))
-    parameters = OrderedDict((parameter1, parameter2, parameter3))
+    #parameters = OrderedDict((parameter1, parameter2, parameter3))
+    templist.append(parameter1)
+    templist.append(parameter2)
+    templist.append(parameter3)
+    parameters=OrderedDict(templist)
     r = requests.post("http://" + targeturl + ":" + str(targetport), params=parameters)
 
     if app.debug:
