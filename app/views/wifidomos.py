@@ -141,7 +141,7 @@ def switch_preset(id):
     templist.append(parameter1)
     templist.append(parameter2)
     templist.append(parameter3)
-    parameters=OrderedDict(templist)
+    parameters=templist
     r = requests.post("http://" + targeturl + ":" + str(targetport), params=parameters)
 
     if app.debug:
