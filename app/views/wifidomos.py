@@ -138,7 +138,7 @@ def switch_preset(id):
     parameter2 = ('g', int(g_code))
     parameter3 = ('b', int(b_code))
     parameters = OrderedDict((parameter1, parameter2, parameter3))
-    r = requests.post("http://" + targeturl + ":" + str(targetport), params=parameters)
+    r = requests.post("http://" + targeturl + ":" + str(targetport), data=parameters)
 
     if app.debug:
       print('Parameters: %s' % parameters)
