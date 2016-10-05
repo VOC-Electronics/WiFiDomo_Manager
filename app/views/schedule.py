@@ -31,7 +31,7 @@ from crontab import CronTab
 from collections import OrderedDict
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash, g, \
   jsonify, abort, abort, request, Markup
-from app.database import Preset, db_session, Schedules
+from app.database import Preset, db_session, Schedules, WiFiDomo
 from app.wifidomo_manager import app, db, nav
 from app.views.general import get_wifidomo_list, get_preset_list
 
@@ -86,9 +86,29 @@ mod = Blueprint('schedule', __name__,
                 static_folder='static')
 
 @mod.route('/')
+#@requires_login
 def index():
   #Model.query.filter(Model.columnName.contains('sub_string'))
   #UserImage.query.filter(UserImage.user_id == 1).count()
+  # Employee.query.join(Person).add_columns(Employee.id, Person.name)
+  #result = db.session.query(Users).join(TimeOff, Users.userName == TimeOff.userName)
+  #db.query("""select guests.rid, name, about, locate
+  #  from guests join rooms on guests.rid = rooms.rid""")
+  #r = db.store_result()
+  data = db_session.query(Schedules, WiFiDomo, Preset)\
+    .join(WiFiDomo, Schedules.target_wifidomo == WiFiDomo.id)\
+    .join(Preset, Schedules.action_preset == Preset.id)\
+    .with_entities(Schedules.id, Schedules.name , WiFiDomo.name, Preset.name, Schedules.active).all()
+#  data = db.session.query("""
+#  select SCHED.name as schedule_name, SCHED.active, WFD.name as wifidomo_name, PRT.name as preset_name, WFD.powerstatus
+#  FROM schedule SCHED
+#  JOIN wifidomo WFD
+#    ON SCHED.target_wifidomo = WFD.id
+#  JOIN preset PRT
+#    ON SCHED.action_preset = PRT.id
+#    """)
+  print data
+
   nr_active_schedules = Schedules.query.filter(Schedules.active == True).count()
   nr_schedules = Schedules.query.count()
   schedules = Schedules.query.limit(5).all()
@@ -98,10 +118,12 @@ def index():
                          nr_active_schedules = nr_active_schedules,
                          nr_schedules = nr_schedules,
                          schedules = schedules,
-                         preset_list=preset_list,
-                         wifidomo_list=wifidomo_list)
+                         preset_list = preset_list,
+                         wifidomo_list = wifidomo_list,
+                         listinfo = data)
 
 @mod.route('/edit/<int:id>,', methods=['GET', 'POST'])
+#@requires_login
 def edit_schedule(id):
   error = None
   if not id:

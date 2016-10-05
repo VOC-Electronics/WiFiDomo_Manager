@@ -49,19 +49,17 @@
   </span>{% if nr_schedules > 0 %}
     <table>
     <tr>
-      <th>Name:</th>
+      <th>Schedule name:</th>
       <th>Preset:</th>
       <th>WiFiDomo:</th>
-      <th>Other:</th>
       <th>Active:</th>
     </tr>
-    {% for schedule in schedules %}
+    {% for schedule in listinfo %}
     <tr>
-      <td><a href="{{ url_for('.edit_schedule',id=schedule.id) }}">{{ schedule.name }}</a></td>
-      <td> {{ schedule.action_preset }} </td>
-      <td> {{ schedule.target_wifidomo }} </td>
-      <td> {{ schedule.target_wifidomo }} </td>
-      <td> {{ schedule.active }} </td>
+      <td><a href="{{ url_for('.edit_schedule',id=schedule[0]) }}">{{ schedule[1] }}</a></td>
+      <td> {{ schedule[3] }} </td>
+      <td> {{ schedule[2] }} </td>
+      <td> {{ schedule[4] }} </td>
     </tr>
     {% endfor %}
     </table> {% endif %}
