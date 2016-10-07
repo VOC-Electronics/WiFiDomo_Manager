@@ -33,7 +33,18 @@ mod = Blueprint('general', __name__,
 # Global Functions
 # ==============================================================================
 '''
-
+'''
+# ==============================================================================
+#
+# list functions - The Ugly way.
+# Due to unknown reasons the ordered dict library that works on the Mac does not
+# work on linux.
+# To allow the use of the program on both Mac and Linux I had to device the
+# following subroutines to get an order dict output.
+# It's ugly, but get the job done.
+#
+# ==============================================================================
+'''
 def get_preset_list():
   tempList = []
   presets = Preset.query.order_by(Preset.id)
@@ -91,6 +102,11 @@ def get_location_list():
   return tempList
 
 
+'''
+# ==============================================================================
+# Main Flask required routines.
+# ==============================================================================
+'''
 
 @mod.route('/')
 def index():
