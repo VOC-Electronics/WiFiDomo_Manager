@@ -11,7 +11,7 @@
 Een flask based interface for the WiFiDomo product line.
 
 
-### Database:
+## Database:
 * Currently we only use SQLite3 local database.
 * Future release(s) might include the use of Postgress and/or MySQL/MariaDB/etc.
 
@@ -21,7 +21,33 @@ Een flask based interface for the WiFiDomo product line.
   Docker Container.
   
 
-### Branches
+## Scheduling:
+
+The Scheduling feature uses CRON.<br>
+Be sure that the user running the WiFiDomo Manager has access to create/modify it's Crontab.<br>
+
+Field Name |	Mandatory |	Allowed Values | Allowed Special Characters<
+------------ | ------------- | ------------- | -------------
+Minutes 	   | Yes 	        | 0-59 	         |        * / , -
+Hours| 	     | Yes 	        | 0-23 	         |        * / , -
+Day of month | Yes 	        | 1-31 	         |        * / , -
+Month  	     | Yes 	        | 1-12 or JAN-DEC| 	      * / , -
+Day of week  | Yes 	        | 0-6 or SUN-SAT |        * / , -
+
+Supported special cases allow crontab lines to not use fields.<br> 
+These are the supported aliases:<br>
+Case |	Meaning
+------------ | ------------
+@reboot 	 | Every boot
+@hourly 	 | 0 * * * *
+@daily 	   | 0 0 * * *
+@weekly 	 | 0 0 * * 0
+@monthly 	 | 0 0 1 * *
+@yearly 	 | 0 0 1 1 *
+@annually  | 0 0 1 1 *
+@midnight  | 0 0 * * *
+
+## Branches
 * origin/master - Master Branch
 * origin/development - development branch
 
@@ -55,6 +81,10 @@ THE SOFTWARE.
 
 ## Version History
 
+* 0.5 - 
+* 0.4 -
+* 0.3 - 
+* 0.2 - 
 * 0.1 - Pre-Alpha (Only add/delete/modify wifidomos and locations work.)
 * 0.0 - Initial code
 
