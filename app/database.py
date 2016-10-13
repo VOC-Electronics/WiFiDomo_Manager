@@ -17,12 +17,6 @@ __email__ = 'info@voc-electronics.com'
 #
 # ==============================================================================
 #
-# Todo:
-#
-# Get data from input parameters.
-# Check connections
-# Login
-# Update
 # ==============================================================================
 # Imports
 # ==============================================================================
@@ -49,7 +43,6 @@ db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
 
-
 def init_db():
   Base.metadata.create_all(bind=engine)
 
@@ -58,8 +51,7 @@ Base.query = db_session.query_property()
 
 class Person(Base):
   __tablename__ = 'person'
-  # Here we define columns for the table person
-  # Notice that each column is also a normal Python instance attribute.
+
   id = Column(Integer, primary_key=True)
   surname = Column(String, nullable=False)
   lastname = Column(String, nullable=False)
@@ -73,7 +65,6 @@ class Person(Base):
   updated_on = Column(DateTime,
                       default=datetime.utcnow,
                       onupdate=datetime.utcnow)
-#  authenticated = Column(db.Boolean, default=False)
 
   def __init__(self, surname, lastname, fullname, password):
     self.fullname = fullname
@@ -89,15 +80,12 @@ class Person(Base):
     """True, as all users are active."""
     return True
 
-
   def get_id(self):
     """Return the email address to satisfy Flask-Login's requirements."""
     return self.email
 
-
   def get_email(self):
     return self.email
-
 
   def get_lastname(self):
     return self.lastname
@@ -109,13 +97,18 @@ class Person(Base):
     """Return True if the user is authenticated."""
     return self.authenticated
 
-
   def is_anonymous(self):
     """False, as anonymous users aren't supported."""
     return False
 
+  @cached_property
+  def count(self):
+    return self.person.count()
+
+
 class WiFiDomo(Base):
   __tablename__ = 'wifidomo'
+
   id = Column(Integer, primary_key=True)
   name = Column(String, index=True, nullable=True)
   MAC = Column(String, nullable=True)
@@ -137,6 +130,7 @@ class WiFiDomo(Base):
                     default=datetime.utcnow,
                     onupdate=datetime.utcnow)
 
+
   def __init__(self, name, MAC, location_id, fqdn, status, ip4, ip6=0, port=80):
     self.name = name
     self.MAC = MAC
@@ -151,7 +145,10 @@ class WiFiDomo(Base):
     self.updated_on = datetime.utcnow()
 
   def to_json(self):
-    return dict( name=self.name, MAC=self.MAC, status=self.status, powerstatus=self.powerstatus, fqdn=self.fqdn, ip4=self.ip4, ip6=self.ip6, port=self.port, last_used_rgb=self.last_used_rgb )
+    return dict( name=self.name, MAC=self.MAC, status=self.status,
+                 powerstatus=self.powerstatus, fqdn=self.fqdn,
+                 ip4=self.ip4, ip6=self.ip6, port=self.port,
+                 last_used_rgb=self.last_used_rgb)
 
   @cached_property
   def count(self):
@@ -159,6 +156,7 @@ class WiFiDomo(Base):
 
 class WiFiNetworks(Base):
   __tablename__ = 'wifinetworks'
+
   id = Column(Integer, primary_key=True)
   wifi_sid = Column(String(128), nullable=True)
   wifi_loc = Column(String(128), nullable=True)
@@ -172,9 +170,14 @@ class WiFiNetworks(Base):
   def to_json(self):
     return dict(wifi_sid=self.wifi_sid, wifi_loc=self.wifi_loc)
 
+  @cached_property
+  def count(self):
+    return self.wifinetworks.count()
+
 
 class Locations(Base):
   __tablename__ = 'locations'
+
   id = Column(Integer, primary_key=True)
   location_name = Column(String, unique=True, nullable=False)
   location_code = Column(Integer, default=0)
@@ -190,16 +193,24 @@ class Locations(Base):
   def to_json(self):
     return dict(name=self.location_name, code=self.location_code, description=self.location_description)
 
+  @cached_property
+  def count(self):
+    return self.locations.count()
+
 
 class Loginlog(Base):
   __tablename__ = 'loginlog'
+
   id = Column(Integer, primary_key=True)
   loginby = Column(String, nullable=True)
   logindate = Column(DateTime)
 
+  def to_json(self):
+    return dict(loginby=self.loginby, logindate=self.logindate)
 
 class Preset(Base):
   __tablename__ = 'preset'
+
   id = Column(Integer, primary_key=True)
   name = Column(String, nullable=False)
   r_code = Column(Integer, nullable=False)
@@ -217,19 +228,31 @@ class Preset(Base):
   def to_json(self):
     return dict(name=self.name, r_code=self.r_code, g_code=self.g_code, b_code=self.b_code)
 
+  @cached_property
+  def count(self):
+    return self.preset.count()
+
 
 class Pattern(Base):
   __tablename__ = 'pattern'
+
   id = Column(Integer, primary_key=True)
   name = Column(String(200), nullable=False)
 
   def __init__(self, name):
     self.name = name
 
+  def to_json(self):
+    return dict(name=self.name)
+
+  @cached_property
+  def count(self):
+    return self.pattern.count()
 
 #ToDo: Build full Schedules table and routines.
 class Schedules(Base):
   __tablename__ = 'schedule'
+
   id = Column(Integer, primary_key = True)
   name = Column(String, nullable = False)
   crondata = Column(String, nullable=True)
@@ -272,4 +295,11 @@ class Schedules(Base):
     return '<Schedule %s>' % (self.name)
 
   def to_json(self):
-    return dict(name=self.name)
+    return dict(name=self.name, crondata=self.crondata,
+                r_code=self.r_code, g_code=self.g_code, b_code=self.b_code,
+                target_wifidomo=self.target_wifidomo)
+
+  @cached_property
+  def count(self):
+    return self.schedule.count()
+
