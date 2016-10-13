@@ -26,7 +26,7 @@ Een flask based interface for the WiFiDomo product line.
 The Scheduling feature uses CRON.<br>
 Be sure that the user running the WiFiDomo Manager has access to create/modify it's Crontab.<br>
 
-Field Name |	Mandatory |	Allowed Values | Allowed Special Characters<
+Field Name |	Mandatory |	Allowed Values | Allowed Special Characters
 ------------ | ------------- | ------------- | -------------
 Minutes 	   | Yes 	        | 0-59 	         |        * / , -
 Hours| 	     | Yes 	        | 0-23 	         |        * / , -
@@ -36,7 +36,8 @@ Day of week  | Yes 	        | 0-6 or SUN-SAT |        * / , -
 
 Supported special cases allow crontab lines to not use fields.<br> 
 These are the supported aliases:<br>
-Case |	Meaning
+
+Case | Meaning
 ------------ | ------------
 @reboot 	 | Every boot
 @hourly 	 | 0 * * * *
