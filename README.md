@@ -28,14 +28,14 @@ Be sure that the user running the WiFiDomo Manager has access to create/modify i
 
 Field Name |	Mandatory |	Allowed Values | Allowed Special Characters
 ------------ | ------------- | ------------- | -------------
-Minutes 	   | Yes 	        | 0-59 	         |        * / , -
-Hours| 	     | Yes 	        | 0-23 	         |        * / , -
-Day of month | Yes 	        | 1-31 	         |        * / , -
-Month  	     | Yes 	        | 1-12 or JAN-DEC| 	      * / , -
-Day of week  | Yes 	        | 0-6 or SUN-SAT |        * / , -
+Minutes 	   | Yes 	        | 0-59 	         | * / , -
+Hours| 	     | Yes 	        | 0-23 	         | * / , -
+Day of month | Yes 	        | 1-31 	         | * / , -
+Month  	     | Yes 	        | 1-12 or JAN-DEC| * / , -
+Day of week  | Yes 	        | 0-6 or SUN-SAT | * / , -
 
 Supported special cases allow crontab lines to not use fields.<br> 
-These are the supported aliases:<br>
+These are the official supported aliases, but are not yet available in this application:<br>
 
 Case | Meaning
 ------------ | ------------
@@ -55,16 +55,16 @@ Case | Meaning
 
 ## Whishlist:
 
-## Extra requirements:
-1) Encryption key for use by NGINX
-
 
 ## Python and other required Libraries:
+* Check the requirements.txt ;)
+
+### Other required libraries:
 * libssl-dev
 * libffi
 
 
-possibly, if xml is needed:<br>
+###possibly, if xml is needed:
 * libxslt1-dev
 * libxml2
 * libxml2-dev
