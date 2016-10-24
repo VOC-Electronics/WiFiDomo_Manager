@@ -53,8 +53,8 @@ Case | Meaning
 * origin/development - development branch
 
 
-## Whishlist:
-
+## Wish list:
+- [ ] - Working login system.
 
 ## Python and other required Libraries:
 * Check the requirements.txt ;)
