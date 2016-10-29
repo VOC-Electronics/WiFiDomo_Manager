@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 __author__ = 'Martijn van Leeuwen'
@@ -103,6 +102,7 @@ class Person(Base):
 
   @cached_property
   def count(self):
+    """Teruns the number of registered users."""
     return self.person.count()
 
 
@@ -145,10 +145,15 @@ class WiFiDomo(Base):
     self.updated_on = datetime.utcnow()
 
   def to_json(self):
-    return dict( name=self.name, MAC=self.MAC, status=self.status,
-                 powerstatus=self.powerstatus, fqdn=self.fqdn,
-                 ip4=self.ip4, ip6=self.ip6, port=self.port,
-                 last_used_rgb=self.last_used_rgb)
+    return dict( name=self.name,
+                 MAC=self.MAC,
+                 status=self.status,
+                 powerstatus=self.powerstatus,
+                 fqdn=self.fqdn,
+                 ip4=self.ip4,
+                 ip6=self.ip6,
+                 port=self.port,
+                 last_used_preset=self.last_used_preset)
 
   @cached_property
   def count(self):
@@ -226,7 +231,10 @@ class Preset(Base):
     self.created = datetime.utcnow()
 
   def to_json(self):
-    return dict(name=self.name, r_code=self.r_code, g_code=self.g_code, b_code=self.b_code)
+    return dict(name=self.name,
+                r_code=self.r_code,
+                g_code=self.g_code,
+                b_code=self.b_code)
 
   @cached_property
   def count(self):
@@ -253,24 +261,24 @@ class Pattern(Base):
 class Schedules(Base):
   __tablename__ = 'schedule'
 
-  id = Column(Integer, primary_key = True)
-  name = Column(String, nullable = False)
-  crondata = Column(String, nullable=True)
-  action_date = Column(DateTime, nullable=True)
-  action_time = Column(DateTime, nullable=True)
-  stop_time = Column(DateTime, nullable=True)
-  stop_date = Column(DateTime, nullable=True)
-  start_hr = Column(Integer, nullable=True)
-  start_min = Column(Integer, nullable=True)
-  stop_hr = Column(Integer, nullable=True)
-  stop_min = Column(Integer, nullable=True)
-  action = Column(Integer, nullable=True)
-  r_code = Column(Integer, nullable=True)
-  g_code = Column(Integer, nullable=True)
-  b_code = Column(Integer, nullable=True)
-  active = Column(Boolean, nullable=False, default=False)
-  action_preset = Column(Integer, nullable=True)
-  target_wifidomo = Column(Integer, nullable=True)
+  id = Column(Integer, primary_key = True)              # Database ID
+  name = Column(String, nullable = False)               # Name of the schedule
+  crondata = Column(String, nullable=True)              # the cron string placed in the crontab
+  action_date = Column(DateTime, nullable=True)         # Unused at the moment
+  action_time = Column(DateTime, nullable=True)         # Unused at the moment
+  stop_time = Column(DateTime, nullable=True)           # Unused at the moment
+  stop_date = Column(DateTime, nullable=True)           # Unused at the moment
+  start_hr = Column(Integer, nullable=True)             # Starting hour
+  start_min = Column(Integer, nullable=True)            # Starting minute
+  stop_hr = Column(Integer, nullable=True)              # Stopping hour
+  stop_min = Column(Integer, nullable=True)             # Stopping minute
+  action = Column(Integer, nullable=True)               # Action ID to perform
+  r_code = Column(Integer, nullable=True)               # Red code
+  g_code = Column(Integer, nullable=True)               # Green Code
+  b_code = Column(Integer, nullable=True)               # Blue code
+  active = Column(Boolean, nullable=False, default=False) # Status if the preset is active or not
+  action_preset = Column(Integer, nullable=True)        # Action preset ID
+  target_wifidomo = Column(Integer, nullable=True)      # WiFiDomo ID
   created = Column(DateTime,
                  default=datetime.utcnow,
                  onupdate=datetime.utcnow)
@@ -295,9 +303,14 @@ class Schedules(Base):
     return '<Schedule %s>' % (self.name)
 
   def to_json(self):
-    return dict(name=self.name, crondata=self.crondata,
-                r_code=self.r_code, g_code=self.g_code, b_code=self.b_code,
-                target_wifidomo=self.target_wifidomo)
+    return dict(name=self.name,
+                crondata=self.crondata,
+                r_code=self.r_code,
+                g_code=self.g_code,
+                b_code=self.b_code,
+                target_wifidomo=self.target_wifidomo,
+                actionID=self.action_preset
+                )
 
   @cached_property
   def count(self):
