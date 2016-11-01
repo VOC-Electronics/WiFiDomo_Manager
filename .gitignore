@@ -16,3 +16,5 @@ api/
 app/db/wifidomo.db
 app/db/wifidomo.db.old
 app/db/wifidomo.db.bak
+alembic
+alembic.ini
