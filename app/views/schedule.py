@@ -15,12 +15,6 @@ __email__ = 'info@voc-electronics.com'
 #
 # ==============================================================================
 #
-# Todo:
-#
-# Get data from input parameters.
-# Check connections
-# Login
-# Update
 # ==============================================================================
 # Imports
 # ==============================================================================
@@ -62,6 +56,8 @@ def format_date(dt):
   return dt.strftime('%Y-%m-%d')
 
 
+'''
+# Uitzoeken wat we hier van nog nodig hebben.
 def format_timedelta(delta, granularity='second', threshold=.85):
   if isinstance(delta, datetime):
     delta = datetime.utcnow() - delta
@@ -81,6 +77,7 @@ def format_timedelta(delta, granularity='second', threshold=.85):
         rv += u's'
       return rv
   return u''
+'''
 
 mod = Blueprint('schedule', __name__,
                 static_folder='static')
@@ -88,25 +85,11 @@ mod = Blueprint('schedule', __name__,
 @mod.route('/')
 #@requires_login
 def index():
-  #Model.query.filter(Model.columnName.contains('sub_string'))
-  #UserImage.query.filter(UserImage.user_id == 1).count()
-  # Employee.query.join(Person).add_columns(Employee.id, Person.name)
-  #result = db.session.query(Users).join(TimeOff, Users.userName == TimeOff.userName)
-  #db.query("""select guests.rid, name, about, locate
-  #  from guests join rooms on guests.rid = rooms.rid""")
-  #r = db.store_result()
+
   data = db_session.query(Schedules, WiFiDomo, Preset)\
     .join(WiFiDomo, Schedules.target_wifidomo == WiFiDomo.id)\
     .join(Preset, Schedules.action_preset == Preset.id)\
     .with_entities(Schedules.id, Schedules.name , WiFiDomo.name, Preset.name, Schedules.active).all()
-#  data = db.session.query("""
-#  select SCHED.name as schedule_name, SCHED.active, WFD.name as wifidomo_name, PRT.name as preset_name, WFD.powerstatus
-#  FROM schedule SCHED
-#  JOIN wifidomo WFD
-#    ON SCHED.target_wifidomo = WFD.id
-#  JOIN preset PRT
-#    ON SCHED.action_preset = PRT.id
-#    """)
   print data
 
   nr_active_schedules = Schedules.query.filter(Schedules.active == True).count()
@@ -159,6 +142,23 @@ def edit_schedule(id):
       data.start_min = request.form.get('start_min', type=int)
       data.stop_hr = request.form.get('stop_hr', type=int)
       data.stop_min = request.form.get('stop_min', type=int)
+      data.day_mon = request.form.get('monday', type=bool)
+      data.day_tue = request.form.get('tuesday', type=bool)
+      data.day_wed = request.form.get('wednesday', type=bool)
+      data.day_thu = request.form.get('thursday', type=bool)
+      data.day_fri = request.form.get('friday', type=bool)
+      data.day_sat = request.form.get('saturday', type=bool)
+      data.day_sun = request.form.get('sunday', type=bool)
+
+      if app.debug:
+        print('Getting data from form:')
+        print(data.name)
+        print(data.target_wifidomo)
+        print(data.action_preset)
+        print(data.start_hr)
+        print(data.start_min)
+        print(data.stop_hr)
+        print(data.stop_min)
 
       db_session.commit()
       flash(u'Saving modifications for %s' % data.name)
@@ -175,7 +175,14 @@ def edit_schedule(id):
                 start_min = data.start_min,
                 stop_hr = data.stop_hr,
                 stop_min = data.stop_min,
-                active = data.active)
+                active = data.active,
+                monday = data.day_mon,
+                tuesday = data.day_tue,
+                wednesday = data.day_wed,
+                thursday = data.day_thu,
+                friday = data.day_fri,
+                saturday = data.day_sat,
+                sunday = data.day_sun)
 
     if app.debug:
       print('Populating form:')
@@ -213,6 +220,16 @@ def add_schedule():
     schedule_startmin = request.form.get('start_min', type=int)
     schedule_stophr = request.form.get('stop_hr', type=int)
     schedule_stopmin = request.form.get('stop_min', type=int)
+    schedule_day_mon = request.form.get('monday', type=bool)
+    schedule_day_tue = request.form.get('tuesday', type=bool)
+    schedule_day_wed = request.form.get('wednesday', type=bool)
+    schedule_day_thu = request.form.get('thursday', type=bool)
+    schedule_day_fri = request.form.get('friday', type=bool)
+    schedule_day_sat = request.form.get('saturday', type=bool)
+    schedule_day_sun = request.form.get('sunday', type=bool)
+
+    if app.debug:
+      print('Collected all POST data.')
 
     if app.debug:
       print('-[DEBUG]-')
@@ -224,8 +241,24 @@ def add_schedule():
       print('Start_Min: %s' % str(schedule_startmin))
       print('Stop_HR: %s' % str(schedule_stophr))
       print('Stop_Min: %s' % str(schedule_stopmin))
+      print('Monday checked: %s' % str(schedule_day_mon))
+      print('Tuesday checked: %s' % (schedule_day_tue))
+      print('Wednesday checked: %s' % str(schedule_day_wed))
+      print('Thursday checked: %s' % str(schedule_day_thu))
+      print('Friday checked: %s' % str(schedule_day_fri))
+      print('Saturday checked: %s' % str(schedule_day_sat))
+      print('Sunday checked: %s' % str(schedule_day_sun))
 
-    new_schedule = Schedules(schedule_name, schedule_wifidomo, schedule_preset, schedule_starthr, schedule_startmin, schedule_stophr, schedule_stopmin)
+    # using the field : crondata to store all information (Best to build a cron string straight away.
+
+    new_schedule = Schedules(schedule_name,
+                             schedule_wifidomo,
+                             schedule_preset,
+                             schedule_starthr,
+                             schedule_startmin,
+                             schedule_stophr,
+                             schedule_stopmin)
+
     db_session.add(new_schedule)
     db_session.commit()
     flash(u'Your Schedule was added')
@@ -236,6 +269,7 @@ def add_schedule():
     wifidomo_list = get_wifidomo_list()
     if app.debug:
       print('Processing GET call.')
+
     return render_template('schedule/new.html',
                            preset_list = preset_list,
                            wifidomo_list = wifidomo_list)

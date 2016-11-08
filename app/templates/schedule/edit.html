@@ -22,9 +22,7 @@
 {% endblock %}
 {% block body %}
   <body onload="zoom()">
-  <p>
-  <h2>Add a new schedule</h2>
-  </p>
+  <h2>Edit {% if form.active %}Active {% endif %}schedule</h2>
   <p>
   <form action="" method=post>
     <dl class=formlist>
@@ -78,13 +76,41 @@
         {% endif %}
       </table>
     </dl>
-    <p>
+    <fieldset class="days">
+      <legend>Day(s) of Week</legend>
+      <label for="monday">
+        <input type="checkbox" id="monday" name="monday" value="Monday" {% if form.monday %} checked {% endif %} />Mo
+      </label>
+      <label for="tuesday">
+        <input type="checkbox" id="tuesday" name="tuesday" value="Tuesday" {% if form.tuesday %} checked {% endif %} />Tu
+      </label>
+      <label for="wednesday">
+        <input type="checkbox" id="wednesday" name="wednesday" value="Wednesday" {% if form.wednesday %} checked {% endif %} />We
+      </label>
+      <label for="thursday">
+        <input type="checkbox" id="thursday" name="thursday" value="Thursday" {% if form.thursday %} checked {% endif %} />Th
+      </label>
+      <label for="friday">
+        <input type="checkbox" id="friday" name="friday" value="Friday" {% if form.friday %} checked {% endif %} />Fr
+      </label>
+      <label for="saturday">
+        <input type="checkbox" id="saturday" name="saturday" value="Saturday" {% if form.saturday %} checked {% endif %} />Sa
+      </label>
+      <label for="sunday">
+        <input type="checkbox" id="sunday" name="sunday" value="Sunday" {% if form.saturday %} checked {% endif %} />Su
+      </label>
+    </fieldset>
+    <fieldset class="days">
+      <legend>Custom cron string:</legend>
+      <label for="crontstring">
+        <input type="text" id="crontstring" />
+      </label>
+    </fieldset>
+    <div class="days">
       <input type=submit name=submit value=Submit>
       <input type=submit name=cancel value=Cancel>
-      <br>
       <input type=submit name=delete value=Delete>
-      <br>
-      <input type=submit name=activate value=Activate>
-      <input type=submit name=deactivate value=Deactivate>
+      {% if form.active %}<input type=submit name=deactivate value=Deactivate> {% else %}<input type=submit name=activate value=Activate>{% endif %}
+    </div>
   </form>
 {% endblock %}

@@ -56,8 +56,9 @@ def get_preset_list():
     TempList2.append(TempList2Item2)
     zippedtempdict = dict(TempList2)
     tempList.append(zippedtempdict)
-    if app.debug:
-      print('Appended to list: %s' % zippedtempdict)
+    #if app.debug:
+    #  print('Appended to list: %s' % zippedtempdict)
+
   if app.debug:
     print('tempList value:')
     print(tempList)
@@ -75,8 +76,9 @@ def get_wifidomo_list():
     TempList2.append(TempList2Item2)
     zippedtempdict = dict(TempList2)
     tempList.append(zippedtempdict)
-    if app.debug:
-      print('Appended to list: %s' % zippedtempdict)
+    #if app.debug:
+    #  print('Appended to list: %s' % zippedtempdict)
+
   if app.debug:
     print('tempList value:')
     print(tempList)
@@ -94,8 +96,9 @@ def get_location_list():
     NewList3.append(newList2)
     zippedlistdictionary = dict(NewList3)
     tempList.append(zippedlistdictionary)
-    if app.debug:
-      print('Appended to list: %s' % zippedlistdictionary)
+    #if app.debug:
+    #  print('Appended to list: %s' % zippedlistdictionary)
+
   if app.debug:
     print('tempList value:')
     print(tempList)

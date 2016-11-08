@@ -195,24 +195,30 @@ class Pattern(Base):
 
 class Schedules(Base):
   __tablename__ = 'schedule'
-  id = Column(Integer, primary_key = True)
-  name = Column(String, nullable = False)
-  crondata = Column(String, nullable=True)
-  action_date = Column(DateTime, nullable=True)
-  action_time = Column(DateTime, nullable=True)
-  stop_time = Column(DateTime, nullable=True)
-  stop_date = Column(DateTime, nullable=True)
-  start_hr = Column(Integer, nullable=True)
-  start_min = Column(Integer, nullable=True)
-  stop_hr = Column(Integer, nullable=True)
-  stop_min = Column(Integer, nullable=True)
-  action = Column(Integer, nullable=True)
-  r_code = Column(Integer, nullable=True)
-  g_code = Column(Integer, nullable=True)
-  b_code = Column(Integer, nullable=True)
-  active = Column(Boolean, nullable=False, default=False)
-  action_preset = Column(Integer, nullable=True)
-  target_wifidomo = Column(Integer, nullable=True)
+  id = Column(Integer, primary_key = True)                  # Database ID
+  name = Column(String, nullable = False)                   # Name of the schedule
+  crondata = Column(String, nullable=True)                  # the cron string placed in the crontab
+  action_date = Column(DateTime, nullable=True)             # Unused at the moment
+  action_time = Column(DateTime, nullable=True)             # Unused at the moment
+  stop_time = Column(DateTime, nullable=True)               # Unused at the moment
+  stop_date = Column(DateTime, nullable=True)               # Unused at the moment
+  start_hr = Column(Integer, nullable=True)                 # Starting hour
+  start_min = Column(Integer, nullable=True)                # Starting minute
+  stop_hr = Column(Integer, nullable=True)                  # Stopping hour
+  stop_min = Column(Integer, nullable=True)                 # Stopping minute
+  action = Column(Integer, nullable=True)                   # Action ID to perform
+  r_code = Column(Integer, nullable=True)                   # Red code
+  g_code = Column(Integer, nullable=True)                   # Green Code
+  b_code = Column(Integer, nullable=True)                   # Blue code
+  day_mon = Column(Boolean, nullable=False, default=False)
+  day_tue = Column(Boolean, nullable=False, default=False)
+  day_wed = Column(Boolean, nullable=False, default=False)
+  day_thu = Column(Boolean, nullable=False, default=False)
+  day_fri = Column(Boolean, nullable=False, default=False)
+  day_sat = Column(Boolean, nullable=False, default=False)
+  day_sun = Column(Boolean, nullable=False, default=False)
+  action_preset = Column(Integer, nullable=True)            # Action preset ID
+  target_wifidomo = Column(Integer, nullable=True)          # WiFiDomo ID
   created = Column(DateTime,
                  default=datetime.utcnow,
                  onupdate=datetime.utcnow)

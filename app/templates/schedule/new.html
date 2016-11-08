@@ -22,9 +22,7 @@
 {% endblock %}
 {% block body %}
   <body onload="zoom()">
-  <p>
   <h2>Add a new schedule</h2>
-  </p>
   <p>
   <form action="" method=post>
     <dl class=formlist>
@@ -72,8 +70,39 @@
         </tr>
       </table>
     </dl>
-    <p>
+    <fieldset class="days">
+      <legend>Day(s) of Week</legend>
+      <label for="monday">
+        <input type="checkbox" id="monday" value="1" name="monday"/>Mo
+      </label>
+      <label for="tuesday">
+        <input type="checkbox" id="tuesday" value="1" name="tuesday" />Tu
+      </label>
+      <label for="wednesday">
+        <input type="checkbox" id="wednesday" value="1" name="wednesday" />We
+      </label>
+      <label for="thursday">
+        <input type="checkbox" id="thursday" value="1" name="thursday" />Th
+      </label>
+      <label for="friday">
+        <input type="checkbox" id="friday" value="1" name="friday" />Fr
+      </label>
+      <label for="saturday">
+        <input type="checkbox" id="saturday" value="1" name="saturday" />Sa
+      </label>
+      <label for="sunday">
+        <input type="checkbox" id="sunday" value="1" name="sunday" />Su
+      </label>
+    </fieldset>
+    <fieldset class="days">
+      <legend>Custom cron string:</legend>
+      <label for="crontstring">
+        <input type="text" id="crontstring" />
+      </label>
+    </fieldset>
+    <div class="days">
       <input type=submit name=submit value=Submit>
       <input type=submit name=cancel value=Cancel>
+    </div>
   </form>
 {% endblock %}

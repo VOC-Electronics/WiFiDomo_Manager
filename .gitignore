@@ -16,5 +16,6 @@ api/
 app/db/wifidomo.db
 app/db/wifidomo.db.old
 app/db/wifidomo.db.bak
+app/db/wifidomo.db.orig
 alembic
 alembic.ini
