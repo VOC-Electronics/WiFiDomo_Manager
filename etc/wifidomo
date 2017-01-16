@@ -1,0 +1,47 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          wifidomo
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the wifidomo manager server
+# Description:       starts wifidomo using start-stop-daemon
+### END INIT INFO
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=/home/pi/WiFiDomo_Manager/run.py
+PIDFILE=/var/run/wifidomo_man.pid
+UID=root
+USER=root
+NAME=wifidomo
+BASEROOT=/home/pi/WiFiDomo_Manager
+
+test -x $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+case "$1" in
+  start)
+     log_daemon_msg "Starting WiFiDomo Manager"
+     start-stop-daemon --start --chdir $BASEROOT --background --user $USER --name $NAME --pidfile $PIDFILE --startas $DAEMON --chuid $UID -- --daemon
+     log_end_msg $?
+   ;;
+  stop)
+     log_daemon_msg "Stopping WiFiDomo Manager"
+     start-stop-daemon --stop --user $USER --name $NAME --pidfile $PIDFILE --retry 5
+     log_end_msg $?
+   ;;
+  force-reload|restart)
+     $0 stop
+     $0 start
+   ;;
+  status)
+     status_of_proc -p $PIDFILE $DAEMON atd && exit 0 || exit $?
+   ;;
+ *)
+   echo "Usage: /etc/init.d/wifidomo {start|stop|restart|force-reload|status}"
+   exit 1
+  ;;
+esac
+
+exit 0
