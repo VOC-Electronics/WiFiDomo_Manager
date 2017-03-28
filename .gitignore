@@ -19,3 +19,7 @@ app/db/wifidomo.db.bak
 app/db/wifidomo.db.orig
 alembic
 alembic.ini
+tests/test_server.py
+tests/test_server2.py
+tests/mano.py
+
