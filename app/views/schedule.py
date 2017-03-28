@@ -20,14 +20,28 @@ __email__ = 'info@voc-electronics.com'
 # ==============================================================================
 '''
 
-from datetime import datetime, timedelta
-from crontab import CronTab
-from collections import OrderedDict
-from flask import Blueprint, render_template, session, redirect, url_for, request, flash, g, \
-  jsonify, abort, abort, request, Markup
+from crontab import *
+#from collections import OrderedDict
+from flask import Blueprint, render_template, redirect, url_for, flash, abort, request
 from app.database import Preset, db_session, Schedules, WiFiDomo
 from app.wifidomo_manager import app, db, nav
 from app.views.general import get_wifidomo_list, get_preset_list
+from datetime import datetime, timedelta
+import time
+
+# Some utility classes / functions first
+class AllMatch(set):
+    """Universal set - match everything"""
+    def __contains__(self, item): return True
+
+allMatch = AllMatch()
+
+def conv_to_set(obj):  # Allow single integer to be provided
+  if isinstance(obj, (int, long)):
+    return set([obj])  # Single item
+  if not isinstance(obj, set):
+    obj = set(obj)
+  return obj
 
 TIMEDELTA_UNITS = (
     ('year',   3600 * 24 * 365),
@@ -39,7 +53,6 @@ TIMEDELTA_UNITS = (
     ('second', 1)
 )
 
-
 # Sub-Website navigation:
 nav.Bar('subtopSchedules', [
   nav.Item('New Schedule', 'schedule.add_schedule')
@@ -47,10 +60,14 @@ nav.Bar('subtopSchedules', [
 
 #empty_cron = CronTab()
 
+def write_crontab():
+  return
+
+def read_crontab():
+  return
 
 def format_datetime(dt):
   return dt.strftime('%Y-%m-%d @ %H:%M')
-
 
 def format_date(dt):
   return dt.strftime('%Y-%m-%d')
@@ -85,12 +102,10 @@ mod = Blueprint('schedule', __name__,
 @mod.route('/')
 #@requires_login
 def index():
-
   data = db_session.query(Schedules, WiFiDomo, Preset)\
     .join(WiFiDomo, Schedules.target_wifidomo == WiFiDomo.id)\
     .join(Preset, Schedules.action_preset == Preset.id)\
     .with_entities(Schedules.id, Schedules.name , WiFiDomo.name, Preset.name, Schedules.active).all()
-  print data
 
   nr_active_schedules = Schedules.query.filter(Schedules.active == True).count()
   nr_schedules = Schedules.query.count()
@@ -149,17 +164,6 @@ def edit_schedule(id):
       data.day_fri = request.form.get('friday', type=bool)
       data.day_sat = request.form.get('saturday', type=bool)
       data.day_sun = request.form.get('sunday', type=bool)
-
-      if app.debug:
-        print('Getting data from form:')
-        print(data.name)
-        print(data.target_wifidomo)
-        print(data.action_preset)
-        print(data.start_hr)
-        print(data.start_min)
-        print(data.stop_hr)
-        print(data.stop_min)
-
       db_session.commit()
       flash(u'Saving modifications for %s' % data.name)
       return redirect(url_for('schedule.index'))
@@ -200,7 +204,6 @@ def edit_schedule(id):
                            preset_list=preset_list,
                            wifidomo_list=wifidomo_list,
                            form = form)
-
 
 
 @mod.route('/add/', methods=['GET', 'POST'])
