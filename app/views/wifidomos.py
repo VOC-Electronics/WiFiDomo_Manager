@@ -21,7 +21,6 @@ from app.utils import requires_login, request_wants_json
 from app.wifidomo_manager import verify_password
 from app.wifidomo_manager import nav, app
 from app.views.general import get_location_list
-from collections import OrderedDict
 from app.database import WiFiDomo, Locations, db_session, Preset, Schedules
 import requests
 from collections import OrderedDict

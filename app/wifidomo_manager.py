@@ -24,7 +24,6 @@ __email__ = 'info@voc-electronics.com'
 # ==============================================================================
 '''
 import os
-
 from datetime import datetime
 from flask import Flask, render_template, redirect
 from flask_httpauth import HTTPBasicAuth
