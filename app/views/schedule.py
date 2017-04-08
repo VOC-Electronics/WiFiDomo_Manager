@@ -64,6 +64,21 @@ nav.Bar('subtopSchedules', [
 
 # empty_cron = CronTab()
 
+
+def activatecron(targetid = 0):
+  if targetid == 0:
+    return False
+  else:
+    return True
+
+
+def deactivatecron(targetid = 0):
+  if targetid == 0:
+    return False
+  else:
+    return True
+
+
 def write_crontab():
   return
 
@@ -150,12 +165,18 @@ def edit_schedule(id):
     elif 'activate' in request.form:
       data.active = True
       db_session.commit()
-      flash(u'Activating Schedule: %s' % data.name)
+      if activatecron(id):
+        flash(u'Activating Schedule: %s' % data.name)
+      else:
+        flash(u'Unable to Activate Schedule: %s' % data.name)
       return redirect(url_for('schedule.index'))
     elif 'deactivate' in request.form:
       data.active = False
       db_session.commit()
-      flash(u'Deactivating Schedule: %s' % data.name)
+      if deactivatecron(id):
+        flash(u'Deactivating Schedule: %s' % data.name)
+      else:
+        flash(u'Unable to deactivate Schedule: %s' % data.name)
       return redirect(url_for('schedule.index'))
     elif 'submit' in request.form:
       data.name = request.form.get('name', type=str)
