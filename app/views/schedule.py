@@ -172,6 +172,7 @@ def edit_schedule(id):
       data.day_fri = request.form.get('friday', type=bool)
       data.day_sat = request.form.get('saturday', type=bool)
       data.day_sun = request.form.get('sunday', type=bool)
+      data.crondata = request.form.get('crontstring', type=str)
       db_session.commit()
       flash(u'Saving modifications for %s' % data.name)
       return redirect(url_for('schedule.index'))
@@ -194,7 +195,8 @@ def edit_schedule(id):
                 thursday=data.day_thu,
                 friday=data.day_fri,
                 saturday=data.day_sat,
-                sunday=data.day_sun)
+                sunday=data.day_sun,
+                crontstring=data.crondata)
 
     if app.debug:
       print('Populating form:')
@@ -238,6 +240,7 @@ def add_schedule():
     schedule_day_fri = request.form.get('friday', type=bool)
     schedule_day_sat = request.form.get('saturday', type=bool)
     schedule_day_sun = request.form.get('sunday', type=bool)
+    schedule_crondata = request.form.get('crontstring', type=str)
 
     if app.debug:
       print('Collected all POST data.')
@@ -259,6 +262,7 @@ def add_schedule():
       print('Friday checked: %s' % str(schedule_day_fri))
       print('Saturday checked: %s' % str(schedule_day_sat))
       print('Sunday checked: %s' % str(schedule_day_sun))
+      print('Custom cron string: %s' % str(schedule_crondata))
 
     # using the field : crondata to store all information (Best to build a cron string straight away.
 
@@ -268,7 +272,8 @@ def add_schedule():
                              schedule_starthr,
                              schedule_startmin,
                              schedule_stophr,
-                             schedule_stopmin)
+                             schedule_stopmin,
+                             schedule_crondata)
 
     db_session.add(new_schedule)
     db_session.commit()

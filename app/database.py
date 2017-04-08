@@ -293,10 +293,11 @@ class Schedules(Base):
                     default=datetime.utcnow,
                     onupdate=datetime.utcnow)
 
-  def __init__(self, name, target_wifidomo, action_preset, start_hr = 0, start_min = 0, stop_hr = 0, stop_min = 0):
+  def __init__(self, name, target_wifidomo, action_preset, start_hr = 0, start_min = 0, stop_hr = 0, stop_min = 0, customcron):
     self.name = name
     self.target_wifidomo = target_wifidomo
     self.action_preset = action_preset
+    self.crondata = customcron
     if ((start_hr != 0) and (start_min != 00) and (stop_hr != 0) and (stop_min != 0)):
       self.start_min = start_min
       self.start_hr = start_hr
@@ -316,7 +317,7 @@ class Schedules(Base):
                 g_code=self.g_code,
                 b_code=self.b_code,
                 target_wifidomo=self.target_wifidomo,
-                actionID=self.action_preset
+                actionID=self.action_preset,
                 )
 
   @cached_property

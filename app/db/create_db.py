@@ -226,10 +226,11 @@ class Schedules(Base):
                     default=datetime.utcnow,
                     onupdate=datetime.utcnow)
 
-  def __init__(self, name, target_wifidomo, action_preset, start_hr = 0, start_min = 0, stop_hr = 0, stop_min = 0):
+  def __init__(self, name, target_wifidomo, action_preset, start_hr = 0, start_min = 0, stop_hr = 0, stop_min = 0,  customcron):
     self.name = name
     self.target_wifidomo = target_wifidomo
     self.action_preset = action_preset
+    self.crondata =  customcron
     if ((start_hr != 0) and (start_min != 00) and (stop_hr != 0) and (stop_min != 0)):
       self.start_min = start_min
       self.start_hr = start_hr
@@ -266,7 +267,7 @@ preset3 = Preset('Blue', 1023, 1023, 0)
 preset4 = Preset('Orange', 0, 950, 1023)
 preset5 = Preset('Test', 128, 241, 95)
 preset6 = Preset('Test2', 851, 423, 699)
-schedule_off = Schedules('Off', 1, 1, 23, 00)
+schedule_off = Schedules('Off', 1, 1, 23, 00, '')
 session.add(admin)
 session.add(loc1)
 session.add(loc2)
