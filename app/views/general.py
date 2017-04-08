@@ -18,11 +18,13 @@ __email__ = 'info@voc-electronics.com'
 '''
 
 from flask import Blueprint, render_template, session, redirect, url_for, \
-  request, flash, g, jsonify, abort
-from app.utils import requires_login, request_wants_json
-#from app.search import search as perform_search
+  request, flash, abort
+#  request, flash, g, jsonify, abort
+# from app.utils import requires_login, request_wants_json
+# from app.search import search as perform_search
 from app.wifidomo_manager import verify_password, app
-from app.database import db_session, WiFiDomo, Locations, Person, Preset, Schedules
+from app.database import WiFiDomo, Locations, Person, Preset, Schedules
+# from app.database import db_session, WiFiDomo, Locations, Person, Preset, Schedules
 
 mod = Blueprint('general', __name__,
                 static_folder='static',
@@ -56,7 +58,7 @@ def get_preset_list():
     TempList2.append(TempList2Item2)
     zippedtempdict = dict(TempList2)
     tempList.append(zippedtempdict)
-    #if app.debug:
+    # if app.debug:
     #  print('Appended to list: %s' % zippedtempdict)
 
   if app.debug:
@@ -76,7 +78,7 @@ def get_wifidomo_list():
     TempList2.append(TempList2Item2)
     zippedtempdict = dict(TempList2)
     tempList.append(zippedtempdict)
-    #if app.debug:
+    # if app.debug:
     #  print('Appended to list: %s' % zippedtempdict)
 
   if app.debug:
@@ -96,13 +98,17 @@ def get_location_list():
     NewList3.append(newList2)
     zippedlistdictionary = dict(NewList3)
     tempList.append(zippedlistdictionary)
-    #if app.debug:
+    # if app.debug:
     #  print('Appended to list: %s' % zippedlistdictionary)
 
   if app.debug:
     print('tempList value:')
     print(tempList)
   return tempList
+
+
+def perform_search(query, page):
+  return None
 
 
 '''
@@ -121,8 +127,8 @@ def index():
   nr_presets = Preset.query.count()
   nr_schedules = Schedules.query.count()
 
-  #User.query.filter_by(openid=resp.identity_url).first()
-  #overzicht = app.db.query.order_by(wifidomo.created.desc()).limit(1)
+  # User.query.filter_by(openid=resp.identity_url).first()
+  # overzicht = app.db.query.order_by(wifidomo.created.desc()).limit(1)
   return render_template('index.html',
                          overzicht=overzicht,
                          nr_wifidomo=nr_wifidomo,

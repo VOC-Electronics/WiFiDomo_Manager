@@ -20,14 +20,16 @@ __email__ = 'info@voc-electronics.com'
 # ==============================================================================
 '''
 
-from crontab import *
-#from collections import OrderedDict
+# from crontab import *
+# from collections import OrderedDict
 from flask import Blueprint, render_template, redirect, url_for, flash, abort, request
 from app.database import Preset, db_session, Schedules, WiFiDomo
-from app.wifidomo_manager import app, db, nav
+from app.wifidomo_manager import app, nav
+# from app.wifidomo_manager import app, db, nav
 from app.views.general import get_wifidomo_list, get_preset_list
-from datetime import datetime, timedelta
-import time
+# from datetime import datetime, timedelta
+# import time
+
 
 # Some utility classes / functions first
 class AllMatch(set):
@@ -36,12 +38,14 @@ class AllMatch(set):
 
 allMatch = AllMatch()
 
+
 def conv_to_set(obj):  # Allow single integer to be provided
   if isinstance(obj, (int, long)):
     return set([obj])  # Single item
   if not isinstance(obj, set):
     obj = set(obj)
   return obj
+
 
 TIMEDELTA_UNITS = (
     ('year',   3600 * 24 * 365),
@@ -58,16 +62,19 @@ nav.Bar('subtopSchedules', [
   nav.Item('New Schedule', 'schedule.add_schedule')
 ])
 
-#empty_cron = CronTab()
+# empty_cron = CronTab()
 
 def write_crontab():
   return
 
+
 def read_crontab():
   return
 
+
 def format_datetime(dt):
   return dt.strftime('%Y-%m-%d @ %H:%M')
+
 
 def format_date(dt):
   return dt.strftime('%Y-%m-%d')
@@ -100,12 +107,12 @@ mod = Blueprint('schedule', __name__,
                 static_folder='static')
 
 @mod.route('/')
-#@requires_login
+# @requires_login
 def index():
   data = db_session.query(Schedules, WiFiDomo, Preset)\
     .join(WiFiDomo, Schedules.target_wifidomo == WiFiDomo.id)\
     .join(Preset, Schedules.action_preset == Preset.id)\
-    .with_entities(Schedules.id, Schedules.name , WiFiDomo.name, Preset.name, Schedules.active).all()
+    .with_entities(Schedules.id, Schedules.name, WiFiDomo.name, Preset.name, Schedules.active).all()
 
   nr_active_schedules = Schedules.query.filter(Schedules.active == True).count()
   nr_schedules = Schedules.query.count()
@@ -113,15 +120,16 @@ def index():
   preset_list = get_preset_list()
   wifidomo_list = get_wifidomo_list()
   return render_template('schedule/index.html',
-                         nr_active_schedules = nr_active_schedules,
-                         nr_schedules = nr_schedules,
-                         schedules = schedules,
-                         preset_list = preset_list,
-                         wifidomo_list = wifidomo_list,
-                         listinfo = data)
+                         nr_active_schedules=nr_active_schedules,
+                         nr_schedules=nr_schedules,
+                         schedules=schedules,
+                         preset_list=preset_list,
+                         wifidomo_list=wifidomo_list,
+                         listinfo=data)
+
 
 @mod.route('/edit/<int:id>,', methods=['GET', 'POST'])
-#@requires_login
+# @requires_login
 def edit_schedule(id):
   error = None
   if not id:
@@ -173,20 +181,20 @@ def edit_schedule(id):
 
   if request.method == 'GET':
     form = dict(name=data.name,
-                target_wifidomo = data.target_wifidomo,
-                action_preset = data.action_preset,
-                start_hr = data.start_hr,
-                start_min = data.start_min,
-                stop_hr = data.stop_hr,
-                stop_min = data.stop_min,
-                active = data.active,
-                monday = data.day_mon,
-                tuesday = data.day_tue,
-                wednesday = data.day_wed,
-                thursday = data.day_thu,
-                friday = data.day_fri,
-                saturday = data.day_sat,
-                sunday = data.day_sun)
+                target_wifidomo=data.target_wifidomo,
+                action_preset=data.action_preset,
+                start_hr=data.start_hr,
+                start_min=data.start_min,
+                stop_hr=data.stop_hr,
+                stop_min=data.stop_min,
+                active=data.active,
+                monday=data.day_mon,
+                tuesday=data.day_tue,
+                wednesday=data.day_wed,
+                thursday=data.day_thu,
+                friday=data.day_fri,
+                saturday=data.day_sat,
+                sunday=data.day_sun)
 
     if app.debug:
       print('Populating form:')
@@ -203,11 +211,11 @@ def edit_schedule(id):
     return render_template('schedule/edit.html',
                            preset_list=preset_list,
                            wifidomo_list=wifidomo_list,
-                           form = form)
+                           form=form)
 
 
 @mod.route('/add/', methods=['GET', 'POST'])
-#@requires_login
+# @requires_login
 def add_schedule():
   if request.method == 'POST':
     if 'cancel' in request.form:
@@ -274,5 +282,5 @@ def add_schedule():
       print('Processing GET call.')
 
     return render_template('schedule/new.html',
-                           preset_list = preset_list,
-                           wifidomo_list = wifidomo_list)
+                           preset_list=preset_list,
+                           wifidomo_list=wifidomo_list)

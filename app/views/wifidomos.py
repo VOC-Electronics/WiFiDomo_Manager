@@ -16,14 +16,15 @@ __email__ = 'info@voc-electronics.com'
 # ==============================================================================
 '''
 
-from flask import Blueprint, render_template, session, redirect, url_for, request, flash, g, jsonify, abort
-from app.utils import requires_login, request_wants_json
-from app.wifidomo_manager import verify_password
+
+from flask import Blueprint, render_template, redirect, url_for, request, flash, abort  # , g, jsonify, session
+# from app.utils import requires_login, request_wants_json
+# from app.wifidomo_manager import verify_password
 from app.wifidomo_manager import nav, app
 from app.views.general import get_location_list
 from app.database import WiFiDomo, Locations, db_session, Preset, Schedules
 import requests
-from collections import OrderedDict
+# from collections import OrderedDict
 import subprocess
 
 mod = Blueprint('wifidomos', __name__,
@@ -41,12 +42,13 @@ nav.Bar('subtopWD', [
 default_location_keys = {'location_id', 'location_name'}
 
 
-def QueryDomoStatus(target):
+def querydomostatus(target):
   if not target:
     print('Somehow the target to query was empty.')
     abort(502)
   Status = -1
   return Status
+
 
 def send_wifidomo_call(ip, action):
   target = ip
@@ -91,20 +93,19 @@ def index():
   nr_schedules = Schedules.query.count()
   presets = Preset.query.all()
   return render_template('wifidomos/index.html',
-                         nr_wifidomo = nr_wifidomo,
-                         wifidomo_list = wifidomos,
-                         locations_list = locations,
-                         wifidomo_presets = presets,
-                         nr_schedules = nr_schedules)
+                         nr_wifidomo=nr_wifidomo,
+                         wifidomo_list=wifidomos,
+                         locations_list=locations,
+                         wifidomo_presets=presets,
+                         nr_schedules=nr_schedules)
 
 
 @mod.route('/overview', methods=['GET'])
-#@requires_login
+# @requires_login
 def overview():
   nr_wifidomo = WiFiDomo.query.count()
   flash(u'Not much available now, maybe in a future release')
-  return render_template('wifidomos/index.html',
-                         nr_wifidomo=nr_wifidomo)
+  return render_template('wifidomos/index.html', nr_wifidomo=nr_wifidomo)
 
 
 @mod.route('/switch_preset/<int:id>', methods=['POST'])
@@ -136,7 +137,7 @@ def switch_preset(id):
     parameter1 = ('r', int(r_code))
     parameter2 = ('g', int(g_code))
     parameter3 = ('b', int(b_code))
-    #parameters = OrderedDict((parameter1, parameter2, parameter3)) # NOT WORKING ON LINUX
+    # parameters = OrderedDict((parameter1, parameter2, parameter3)) - NOT WORKING ON LINUX
     parameters.append(parameter1)
     parameters.append(parameter2)
     parameters.append(parameter3)
@@ -155,33 +156,28 @@ def switch_preset(id):
       wifidomo.last_used_g = b_code
       wifidomo.last_used_preset = preset_id
       db_session.commit()
-
   if request.method == 'POST' or id:
     if app.debug:
       print('Processing switch_preset Post/id request.')
-
-
-  #flash(u'Changing state of the wifidomo')
-
+  # flash(u'Changing state of the wifidomo')
   if request.method == 'GET':
     pass
-
   return redirect(url_for('wifidomos.index'))
+
 
 @mod.route('/switch/<int:id>', methods=['POST', 'GET'])
 def switch_wifidomo(id):
   wifidomo = WiFiDomo.query.get(id)
   if wifidomo is None:
     abort(404)
-
   targetport = wifidomo.port
-  status = None
+  # status = None
   print('Check FQDN: %s' % wifidomo.fqdn)
+  targeturl = wifidomo.fqdn
   ''' Build up the target URL, first see if we have a FQDN, otherwise check for an IP.'''
   if len(wifidomo.fqdn) > 0:
     if len(wifidomo.ip4) < 1:
-      targeturl = wifidomo.fqdn
-      eping = subprocess.Popen(["ping", "-c", "1" , targeturl], stdout=subprocess.PIPE)
+      eping = subprocess.Popen(["ping", "-c", "1", targeturl], stdout=subprocess.PIPE)
       output, err = eping.communicate()
       if err:
         print('Error executing ping to %s, received error: %s' % (targeturl, err))
@@ -191,7 +187,7 @@ def switch_wifidomo(id):
         print(output)
     else:
       targeturl = wifidomo.ip4
-      eping = subprocess.Popen([ "ping", "-c", "1", targeturl ], stdout=subprocess.PIPE)
+      eping = subprocess.Popen(["ping", "-c", "1", targeturl], stdout=subprocess.PIPE)
       output, err = eping.communicate()
       if err:
         print('Error executing ping to %s, received error: %s' % (targeturl, err))
@@ -200,7 +196,7 @@ def switch_wifidomo(id):
         print('Ping Results for %s' % targeturl)
         print(output)
 
-  currentstatus = QueryDomoStatus(targeturl)
+  # currentstatus = querydomostatus(targeturl)
 
   if wifidomo.status:
     last_used_b = 1023
@@ -220,7 +216,7 @@ def switch_wifidomo(id):
   parameters.append(parameter1)
   parameters.append(parameter2)
   parameters.append(parameter3)
-  #parameters = OrderedDict((parameter1, parameter2, parameter3))
+  # parameters = OrderedDict((parameter1, parameter2, parameter3))
 
   if request.method == 'POST' or id:
     print('Processing Switch Post/id request.')
@@ -247,7 +243,7 @@ def switch_wifidomo(id):
 
 
 @mod.route('/add/', methods=['GET', 'POST'])
-#@requires_login
+# @requires_login
 def add_wifidomo():
   tempList = get_location_list()
 
@@ -287,8 +283,7 @@ def add_wifidomo():
 
     if len(name) < 1:
       flash(u'Error: you have to enter a name')
-      return render_template('wifidomos/new.html',
-                             wifidomo_locations=tempList)
+      return render_template('wifidomos/new.html', wifidomo_locations=tempList)
 
     location = Locations.query.get(location_id)
 
@@ -316,8 +311,7 @@ def add_wifidomo():
       return redirect(url_for('wifidomos.index'))
 
     tempList = get_location_list()
-    return render_template('wifidomos/new.html',
-                           wifidomo_locations=tempList)
+    return render_template('wifidomos/new.html', wifidomo_locations=tempList)
 
   if request.method == 'GET':
     if app.debug:
@@ -331,19 +325,19 @@ def add_wifidomo():
 
 @mod.route('/edit_wifidomo/<int:id>,', methods=['GET', 'POST'])
 def edit_wifidomo(id):
-  error = None
+  # error = None
   data = WiFiDomo.query.get(id)
   if data is None:
     abort(404)
 
   form = dict(name=data.name,
-              ip4 = data.ip4,
-              ip6 = data.ip6,
-              port = data.port,
-              mac = data.MAC,
-              fqdn = data.fqdn,
-              location = data.locationid,
-              status = data.status)
+              ip4=data.ip4,
+              ip6=data.ip6,
+              port=data.port,
+              mac=data.MAC,
+              fqdn=data.fqdn,
+              location=data.locationid,
+              status=data.status)
 
   if app.debug:
     print(data.name)
@@ -388,5 +382,4 @@ def edit_wifidomo(id):
   if request.method == 'GET':
     flash(u'Editing wifidomo: %s' % data.name)
     return render_template('wifidomos/edit.html',
-                           form=form,
-                           wifidomo_locations=tempList)
+                           form=form, wifidomo_locations=tempList)
