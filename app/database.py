@@ -261,9 +261,9 @@ class Pattern(Base):
 class Schedules(Base):
   __tablename__ = 'schedule'
 
-  id = Column(Integer, primary_key = True)                  # Database ID
-  name = Column(String, nullable = False)                   # Name of the schedule
-  crondata = Column(String, nullable=True)                  # the cron string placed in the crontab
+  id = Column(Integer, primary_key=True)                  # Database ID
+  name = Column(String, nullable=False)                   # Name of the schedule
+  crondata = Column(String, nullable=False, default="-")                  # the cron string placed in the crontab
   action_date = Column(DateTime, nullable=True)             # Unused at the moment
   action_time = Column(DateTime, nullable=True)             # Unused at the moment
   stop_time = Column(DateTime, nullable=True)               # Unused at the moment
@@ -294,13 +294,13 @@ class Schedules(Base):
                     onupdate=datetime.utcnow)
 
   def __init__(self, name, target_wifidomo, action_preset,
-               start_hr = 0, start_min = 0, stop_hr = 0, stop_min = 0,
-               customcron = ''):
+               start_hr=0, start_min=0, stop_hr=0, stop_min=0,
+               customcron=''):
     self.name = name
     self.target_wifidomo = target_wifidomo
     self.action_preset = action_preset
     self.crondata = customcron
-    if ((start_hr != 0) and (start_min != 00) and (stop_hr != 0) and (stop_min != 0)):
+    if (start_hr != 0) and (start_min != 00) and (stop_hr != 0) and (stop_min != 0):
       self.start_min = start_min
       self.start_hr = start_hr
       self.stop_hr = stop_hr

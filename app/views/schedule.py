@@ -145,7 +145,7 @@ def index():
 
 @mod.route('/edit/<int:id>,', methods=['GET', 'POST'])
 # @requires_login
-def edit_schedule(id):
+def edit_schedule(id, crontstring=None):
   error = None
   if not id:
     abort(404)
@@ -228,6 +228,8 @@ def edit_schedule(id):
       print(data.start_min)
       print(data.stop_hr)
       print(data.stop_min)
+      print('Cronstring: %s' % data.crondata)
+      print('----------')
 
     preset_list = get_preset_list()
     wifidomo_list = get_wifidomo_list()
