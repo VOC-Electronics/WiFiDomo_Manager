@@ -226,7 +226,9 @@ class Schedules(Base):
                     default=datetime.utcnow,
                     onupdate=datetime.utcnow)
 
-  def __init__(self, name, target_wifidomo, action_preset, start_hr = 0, start_min = 0, stop_hr = 0, stop_min = 0,  customcron):
+  def __init__(self, name, target_wifidomo, action_preset,
+               start_hr=0, start_min=0, stop_hr=0, stop_min=0,
+               customcron=''):
     self.name = name
     self.target_wifidomo = target_wifidomo
     self.action_preset = action_preset
