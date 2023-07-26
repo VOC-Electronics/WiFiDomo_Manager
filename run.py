@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Copyright (C) 2016, V.O.C. Vanleeuwen Opensource Consultancy
+# Copyright (C) 2016-2023, V.O.C. Vanleeuwen Opensource Consultancy
 # -*- coding: utf-8 -*-
 __author__ = 'Martijn van Leeuwen'
 __email__ = 'info@voc-electronics.com'

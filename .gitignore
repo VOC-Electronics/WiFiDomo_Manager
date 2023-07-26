@@ -3,6 +3,7 @@
 *.pyo
 *.whoosh
 *.db
+.vscode/
 env
 dist
 _mailinglist/
